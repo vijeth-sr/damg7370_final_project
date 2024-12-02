@@ -1,0 +1,123 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "nyc_crash_data",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"rejectedDataLinkedService": {
+						"referenceName": "Linkedservice_blob",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {CRASH DATE} as date 'MM/dd/YYYY',",
+				"          {CRASH TIME} as string,",
+				"          BOROUGH as string,",
+				"          {ZIP CODE} as string,",
+				"          LATITUDE as double,",
+				"          LONGITUDE as double,",
+				"          LOCATION as string,",
+				"          {ON STREET NAME} as string,",
+				"          {CROSS STREET NAME} as string,",
+				"          {OFF STREET NAME} as string,",
+				"          {NUMBER OF PERSONS INJURED} as integer,",
+				"          {NUMBER OF PERSONS KILLED} as integer,",
+				"          {NUMBER OF PEDESTRIANS INJURED} as integer,",
+				"          {NUMBER OF PEDESTRIANS KILLED} as integer,",
+				"          {NUMBER OF CYCLIST INJURED} as integer,",
+				"          {NUMBER OF CYCLIST KILLED} as integer,",
+				"          {NUMBER OF MOTORIST INJURED} as integer,",
+				"          {NUMBER OF MOTORIST KILLED} as integer,",
+				"          {CONTRIBUTING FACTOR VEHICLE 1} as string,",
+				"          {CONTRIBUTING FACTOR VEHICLE 2} as string,",
+				"          {CONTRIBUTING FACTOR VEHICLE 3} as string,",
+				"          {CONTRIBUTING FACTOR VEHICLE 4} as string,",
+				"          {CONTRIBUTING FACTOR VEHICLE 5} as string,",
+				"          COLLISION_ID as integer,",
+				"          {VEHICLE TYPE CODE 1} as string,",
+				"          {VEHICLE TYPE CODE 2} as string,",
+				"          {VEHICLE TYPE CODE 3} as string,",
+				"          {VEHICLE TYPE CODE 4} as string,",
+				"          {VEHICLE TYPE CODE 5} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(BOROUGH = trim(upper(BOROUGH)),",
+				"          {ZIP CODE} = trim(upper({ZIP CODE})),",
+				"          {ON STREET NAME} = trim(upper({ON STREET NAME})),",
+				"          {CROSS STREET NAME} = trim(upper({CROSS STREET NAME})),",
+				"          {OFF STREET NAME} = trim(upper({OFF STREET NAME})),",
+				"          {CONTRIBUTING FACTOR VEHICLE 1} = trim(upper({CONTRIBUTING FACTOR VEHICLE 1})),",
+				"          {CONTRIBUTING FACTOR VEHICLE 2} = trim(upper({CONTRIBUTING FACTOR VEHICLE 2})),",
+				"          {CONTRIBUTING FACTOR VEHICLE 3} = trim(upper({CONTRIBUTING FACTOR VEHICLE 3})),",
+				"          {CONTRIBUTING FACTOR VEHICLE 4} = trim(upper({CONTRIBUTING FACTOR VEHICLE 4})),",
+				"          {CONTRIBUTING FACTOR VEHICLE 5} = trim(upper({CONTRIBUTING FACTOR VEHICLE 5})),",
+				"          crash_datetime = toTimestamp(concat(toString({CRASH DATE}), ' ', {CRASH TIME}), 'yyyy-MM-dd HH:mm')) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CRASH_DATE = {CRASH DATE},",
+				"          CRASH_TIME = {CRASH TIME},",
+				"          BOROUGH,",
+				"          ZIP_CODE = {ZIP CODE},",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          LOCATION,",
+				"          ON_STREET_NAME = {ON STREET NAME},",
+				"          CROSS_STREET_NAME = {CROSS STREET NAME},",
+				"          OFF_STREET_NAME = {OFF STREET NAME},",
+				"          NUMBER_OF_PERSONS_INJURED = {NUMBER OF PERSONS INJURED},",
+				"          NUMBER_OF_PERSONS_KILLED = {NUMBER OF PERSONS KILLED},",
+				"          NUMBER_OF_PEDESTRIANS_INJURED = {NUMBER OF PEDESTRIANS INJURED},",
+				"          NUMBER_OF_PEDESTRIANS_KILLED = {NUMBER OF PEDESTRIANS KILLED},",
+				"          NUMBER_OF_CYCLIST_INJURED = {NUMBER OF CYCLIST INJURED},",
+				"          NUMBER_OF_CYCLIST_KILLED = {NUMBER OF CYCLIST KILLED},",
+				"          NUMBER_OF_MOTORIST_INJURED = {NUMBER OF MOTORIST INJURED},",
+				"          NUMBER_OF_MOTORIST_KILLED = {NUMBER OF MOTORIST KILLED},",
+				"          CONTRIBUTING_FACTOR_VEHICLE_1 = {CONTRIBUTING FACTOR VEHICLE 1},",
+				"          CONTRIBUTING_FACTOR_VEHICLE_2 = {CONTRIBUTING FACTOR VEHICLE 2},",
+				"          CONTRIBUTING_FACTOR_VEHICLE_3 = {CONTRIBUTING FACTOR VEHICLE 3},",
+				"          CONTRIBUTING_FACTOR_VEHICLE_4 = {CONTRIBUTING FACTOR VEHICLE 4},",
+				"          CONTRIBUTING_FACTOR_VEHICLE_5 = {CONTRIBUTING FACTOR VEHICLE 5},",
+				"          COLLISION_ID,",
+				"          VEHICLE_TYPE_CODE_1 = {VEHICLE TYPE CODE 1},",
+				"          VEHICLE_TYPE_CODE_2 = {VEHICLE TYPE CODE 2},",
+				"          VEHICLE_TYPE_CODE_3 = {VEHICLE TYPE CODE 3},",
+				"          VEHICLE_TYPE_CODE_4 = {VEHICLE TYPE CODE 4},",
+				"          {VEHICLE TYPE CODE 5},",
+				"          CRASH_DATETIME = crash_datetime",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
