@@ -1,5 +1,5 @@
 {
-	"name": "SnowflakeTable",
+	"name": "SnowflakeStagiing",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflakeconnection",
