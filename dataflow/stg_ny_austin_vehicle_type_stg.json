@@ -126,7 +126,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> nystg",
-				"derivedColumn3, derivedColumn2 union(byName: true)~> union1",
+				"derivedColumn3, derivedColumn2 union(byName: true,",
+				"     partitionBy('roundRobin', 2))~> union1",
 				"derivedColumn1 select(mapColumn(",
 				"          each(match(/* All input columns */ true()),",
 				"               /* Input name */ $$ = $$)",
@@ -153,7 +154,8 @@
 				"          DI_source_name = \"stg_ny\") ~> derivedColumn2",
 				"select2 derive(DI_Created_dt = currentUTC(),",
 				"          pid = \"Piddhjsjsj446GRE33fb\",",
-				"          DI_source_name = \"stg_austin\") ~> derivedColumn3"
+				"          DI_source_name = \"stg_austin\",",
+				"     partitionBy('hash', 1)) ~> derivedColumn3"
 			]
 		}
 	}
