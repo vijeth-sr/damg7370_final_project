@@ -81,7 +81,7 @@
 				"          Location_New = concat('POINT(', toString(Longitude), ' ', toString(Latitude), ')'),",
 				"          {Road Name} = trim({Road Name}),",
 				"          {Cross-Street Name} = trim({Cross-Street Name}),",
-				"          {Off-Road Description} = trim({Off-Road Description})) ~> derivedColumn1",
+				"          {Off-Road Description} = trim(regexReplace({Off-Road Description}, '\\n', ' '))) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
