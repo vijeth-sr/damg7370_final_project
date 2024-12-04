@@ -18,18 +18,14 @@
 						"referenceName": "SnowflakeStagiing",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
+					"name": "stgnycraw",
 					"rejectedDataLinkedService": {
 						"referenceName": "Linkedservice_blob",
 						"type": "LinkedServiceReference"
 					}
 				}
 			],
-			"transformations": [
-				{
-					"name": "derivedColumn1"
-				}
-			],
+			"transformations": [],
 			"scriptLines": [
 				"source(output(",
 				"          {CRASH DATE} as date 'MM/dd/YYYY',",
@@ -65,18 +61,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 derive(BOROUGH = trim(upper(BOROUGH)),",
-				"          {ZIP CODE} = trim(upper({ZIP CODE})),",
-				"          {ON STREET NAME} = trim(upper({ON STREET NAME})),",
-				"          {CROSS STREET NAME} = trim(upper({CROSS STREET NAME})),",
-				"          {OFF STREET NAME} = trim(upper({OFF STREET NAME})),",
-				"          {CONTRIBUTING FACTOR VEHICLE 1} = trim(upper({CONTRIBUTING FACTOR VEHICLE 1})),",
-				"          {CONTRIBUTING FACTOR VEHICLE 2} = trim(upper({CONTRIBUTING FACTOR VEHICLE 2})),",
-				"          {CONTRIBUTING FACTOR VEHICLE 3} = trim(upper({CONTRIBUTING FACTOR VEHICLE 3})),",
-				"          {CONTRIBUTING FACTOR VEHICLE 4} = trim(upper({CONTRIBUTING FACTOR VEHICLE 4})),",
-				"          {CONTRIBUTING FACTOR VEHICLE 5} = trim(upper({CONTRIBUTING FACTOR VEHICLE 5})),",
-				"          crash_datetime = toTimestamp(concat(toString({CRASH DATE}), ' ', {CRASH TIME}), 'yyyy-MM-dd HH:mm')) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          COLLISION_ID as string,",
@@ -148,7 +133,7 @@
 				"          VEHICLE_TYPE_CODE_3 = {VEHICLE TYPE CODE 3},",
 				"          VEHICLE_TYPE_CODE_4 = {VEHICLE TYPE CODE 4},",
 				"          VEHICLE_TYPE_CODE_5 = {VEHICLE TYPE CODE 5}",
-				"     )) ~> sink1"
+				"     )) ~> stgnycraw"
 			]
 		}
 	}
