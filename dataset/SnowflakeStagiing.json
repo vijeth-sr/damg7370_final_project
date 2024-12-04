@@ -19,19 +19,15 @@
 			},
 			{
 				"name": "CRASH_DATE",
-				"type": "VARCHAR"
+				"type": "DATE"
 			},
 			{
 				"name": "CRASH_TIME",
-				"type": "VARCHAR"
+				"type": "TIME"
 			},
 			{
-				"name": "BOROUGH",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "ZIP_CODE",
-				"type": "VARCHAR"
+				"name": "CRASH_DATETIME",
+				"type": "TIMESTAMP_NTZ"
 			},
 			{
 				"name": "LATITUDE",
@@ -42,92 +38,108 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "LOCATION",
+				"name": "STREET_NAME",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ON_STREET_NAME",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "OFF_STREET_NAME",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "CROSS_STREET_NAME",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "NUMBER_OF_PERSONS_INJURED",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "NUMBER_OF_PERSONS_KILLED",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "NUMBER_OF_PEDESTRIANS_INJURED",
+				"name": "ZIP_CODE",
 				"type": "VARCHAR"
 			},
 			{
 				"name": "NUMBER_OF_PEDESTRIANS_KILLED",
-				"type": "VARCHAR"
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PEDESTRIANS_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PERSONS_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
 			},
 			{
 				"name": "NUMBER_OF_CYCLIST_INJURED",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "NUMBER_OF_CYCLIST_KILLED",
-				"type": "VARCHAR"
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
 			},
 			{
 				"name": "NUMBER_OF_MOTORIST_INJURED",
-				"type": "VARCHAR"
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
 			},
 			{
 				"name": "NUMBER_OF_MOTORIST_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PERSONS_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_CYCLIST_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDESTRIAN_FLAG",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOT_INJRY_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTORIST_INJRY_OR_KILLED_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOT_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "CONTRIBUTING_FACTOR_VEHICLE",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "CONTRIBUTING_FACTOR_VEHICLE_1",
+				"name": "VEHICLE_TYPE_CODE",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "CONTRIBUTING_FACTOR_VEHICLE_2",
+				"name": "CITY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "CONTRIBUTING_FACTOR_VEHICLE_3",
+				"name": "COUNTRY",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "CONTRIBUTING_FACTOR_VEHICLE_4",
+				"name": "DI_WORKFLOW_FILENAME",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "CONTRIBUTING_FACTOR_VEHICLE_5",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "VEHICLE_TYPE_CODE_1",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "VEHICLE_TYPE_CODE_2",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "VEHICLE_TYPE_CODE_3",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "VEHICLE_TYPE_CODE_4",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "VEHICLE_TYPE_CODE_5",
-				"type": "VARCHAR"
+				"name": "DI_CREATEDDATE",
+				"type": "TIMESTAMP_NTZ"
 			}
 		],
 		"typeProperties": {
