@@ -1,0 +1,145 @@
+{
+	"name": "ds_Snowflake_ny_stg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "COLLISION_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CRASH_DATE",
+				"type": "DATE"
+			},
+			{
+				"name": "CRASH_TIME",
+				"type": "TIME"
+			},
+			{
+				"name": "CRASH_DATETIME",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "LATITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "STREET_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "ZIP_CODE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "NUMBER_OF_PEDESTRIANS_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PEDESTRIANS_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PERSONS_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_CYCLIST_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_MOTORIST_INJURED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_MOTORIST_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_PERSONS_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "NUMBER_OF_CYCLIST_KILLED",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDESTRIAN_FLAG",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOT_INJRY_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTORIST_INJRY_OR_KILLED_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOT_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "CONTRIBUTING_FACTOR_VEHICLE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "VEHICLE_TYPE_CODE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CITY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_WORKFLOW_FILENAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATEDDATE",
+				"type": "TIMESTAMP_NTZ"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "STG_NYC_V2"
+		}
+	}
+}
