@@ -1,0 +1,85 @@
+{
+	"name": "snowflakeDimDate",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "DATE_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DATE",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "DATE_IN_WORDS",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DAY_OF_MONTH",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MONTH",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MONTH_OF_YEAR",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "YEAR",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DAY_OF_WEEK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "HOUR",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MINUTES",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SECOND",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DI_CREATED_DATE",
+				"type": "DATE"
+			},
+			{
+				"name": "DI_WORKFLOW_NAME",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "DIM_DATE"
+		}
+	}
+}

@@ -1,0 +1,43 @@
+{
+	"name": "pl_dim_date_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "df_dim_date",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_date_dim_load",
+						"type": "DataFlowReference",
+						"parameters": {
+							"DI_WORKFLOW_NAME": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"DI_WORKFLOW_NAME": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

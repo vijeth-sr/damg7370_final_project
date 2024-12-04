@@ -1,0 +1,28 @@
+{
+	"name": "ds_montgomery_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stg_chicago",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Montgomery_Crash_Reporting_-_Incidents_Data_20241204.tsv",
+				"container": "bronze"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Report Number\tLocal Case Number\tAgency Name\tACRS Report Type\tCrash Date/Time\tHit/Run\tRoute Type\tLane Direction\tLane Type\tNumber of Lanes\tDirection\tDistance\tDistance Unit\tRoad Grade\tRoad Name\tCross-Street Name\tOff-Road Description\tMunicipality\tRelated Non-Motorist\tAt Fault\tCollision Type\tWeather\tSurface Condition\tLight\tTraffic Control\tDriver Substance Abuse\tNon-Motorist Substance Abuse\tFirst Harmful Event\tSecond Harmful Event\tJunction\tIntersection Type\tRoad Alignment\tRoad Condition\tRoad Division\tLatitude\tLongitude\tLocation",
+				"type": "String"
+			}
+		]
+	}
+}
