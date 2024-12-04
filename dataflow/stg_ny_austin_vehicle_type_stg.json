@@ -20,7 +20,23 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "select3"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          CRASH_ID as string,",
@@ -103,7 +119,29 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> nystg"
+				"     format: 'table') ~> nystg",
+				"select2, select3 union(byName: true)~> union1",
+				"derivedColumn1 select(mapColumn(",
+				"          each(match(/* All input columns */ true()),",
+				"               /* Input name */ $$ = $$)",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"union1 derive() ~> derivedColumn1",
+				"austinstg select(mapColumn(",
+				"          CRASH_ID,",
+				"          units_involved,",
+				"          Di_workflow_name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"nystg select(mapColumn(",
+				"          COLLISION_ID,",
+				"          VEHICLE_TYPE_CODE,",
+				"          DI_CREATEDDATE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3"
 			]
 		}
 	}
