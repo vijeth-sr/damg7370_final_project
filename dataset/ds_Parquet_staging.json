@@ -1,0 +1,20 @@
+{
+	"name": "ds_Parquet_staging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stgtabledamge7370",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "silvercontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

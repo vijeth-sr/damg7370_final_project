@@ -1,0 +1,1259 @@
+{
+	"name": "pl_tsv_to_parquet",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.01:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Restaurant Name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RestaurantName",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Inspection Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "InspectionType",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Inspection Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "InspectionDate",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Inspection Score",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "InspectionScore",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Street Address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "StreetAddress",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Zip Code",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ZipCode",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription1",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints1",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail1",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo1",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription2",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints2",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail2",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo2",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription3",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints3",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail3",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 3",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo3",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolatioDescription4",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints4",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail 4",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 4",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo4",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 5",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription5",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 5",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints5",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 5",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail5",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 5",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo5",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription6",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints6",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail6",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo6",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 7",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription7",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 7",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints7",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 7",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail7",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 7",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo7",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription8",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints8",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail8",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo8",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 9",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription9",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 9",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints9",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 9",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail9",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 9",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo9",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription10",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints10",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail10",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo10",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 11",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription11",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 11",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints11",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 11",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail11",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 11",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo11",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription12",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints12",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail12",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo12",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 13",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription13",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 13",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints13",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 13",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail13",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 13",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo13",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription14",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints14",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail14",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo14",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 15",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription15",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 15",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints15",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 15",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail15",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 15",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo15",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 16",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription16",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 16",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints16",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 16",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail16",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 16",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo16",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 17",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription17",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 17",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints17",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 17",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail17",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 17",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo17",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 18",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription18",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 18",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints18",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 18",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail18",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 18",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo18",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 19",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription19",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 19",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints19",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 19",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetai19",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 19",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo19",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 20",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription20",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 20",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints20",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 20",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail20",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation  Memo - 20",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo20",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 21",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription21",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 21",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints21",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 21",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail21",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 21",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo21",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 22",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription22",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 22",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints22",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 22",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail22",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 22",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo22",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 23",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription23",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 23",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints23",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 23",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail23",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 23",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo23",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 24",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription24",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 24",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints24",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 24",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail24",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 24",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo24",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Description - 25",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDescription25",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Points - 25",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationPoints25",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Detail - 25",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationDetail25",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Violation Memo - 25",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ViolationMemo25",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Inspection Year",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "InspectionYear",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Lat Long Location",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Lat_Long_Location",
+									"physicalType": "UTF8"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_textfile",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "Restaurant_and_Food_Establishment_Inspections__October_2016_to_January_2024__20241029.tsv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_Parquet_staging",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-11-02T22:25:19Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
