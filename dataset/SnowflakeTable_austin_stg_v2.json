@@ -231,7 +231,7 @@
 		],
 		"typeProperties": {
 			"schema": "STAGING",
-			"table": "STG_CHICAGO_V2"
+			"table": "FACT_CRASH"
 		}
 	}
 }
