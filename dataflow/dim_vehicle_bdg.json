@@ -85,7 +85,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1, source2 union(byName: true)~> union1",
-				"surrogateKey2 derive(pid = \"ppidbyDhrumiPatel\",",
+				"surrogateKey2 derive(pid = \"ppdp\",",
 				"          DI_Created_dt = currentTimestamp(),",
 				"          VEHICLE_SK = iif(isNull(VEHICLE_SK),0,toInteger(VEHICLE_SK)),",
 				"          VEHICLE_INVOLVED_SK = iif(isNull(VEHICLE_INVOLVED_SK),0,toInteger(VEHICLE_INVOLVED_SK)),",
