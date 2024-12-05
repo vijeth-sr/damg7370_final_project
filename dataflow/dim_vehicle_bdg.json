@@ -26,7 +26,15 @@
 					"name": "source3"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTablebdg",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "select1"
@@ -88,14 +96,37 @@
 				"     stepValue: 1L) ~> surrogateKey2",
 				"derivedColumn1 select(mapColumn(",
 				"          VEHICLE_SK,",
-				"          VEHICLE_INVOLVED_SK = union2@VEHICLE_INVOLVED_SK,",
 				"          vehicle_involved_sk = VEHICLE_INVOLVED_SK,",
 				"          Crash_sk = CRASH_SK,",
 				"          pid,",
 				"          DI_Created_dt",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2"
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          VEHICLE_INVOLVED_SK as string,",
+				"          DI_CREATED_DT as string,",
+				"          PID as string,",
+				"          VEHICLE_SK as string,",
+				"          CRASH_SK as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          VEHICLE_INVOLVED_SK = vehicle_involved_sk,",
+				"          DI_CREATED_DT = DI_Created_dt,",
+				"          PID = pid,",
+				"          VEHICLE_SK,",
+				"          CRASH_SK = Crash_sk",
+				"     )) ~> sink1"
 			]
 		}
 	}
