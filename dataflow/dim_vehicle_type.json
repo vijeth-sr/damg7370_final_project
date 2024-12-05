@@ -1,0 +1,68 @@
+{
+	"name": "dim_vehicle_type",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Snowflake_ny_ausin",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_dim_vehicle_type",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "select2"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CRASH_ID as string,",
+				"          UNITS_INVOLVED as string,",
+				"          DI_CREATEDDATE as string,",
+				"          DI_WORKFLOWFILENAME as string,",
+				"          DI_SOURCENAME as string,",
+				"          PID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     inferDriftedColumnTypes: true,",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          VEHICLE_SK as string,",
+				"          VEHICLE_TYPE as string,",
+				"          DI_CREATED_DT as string,",
+				"          PID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     inferDriftedColumnTypes: true,",
+				"     format: 'table') ~> source2",
+				"union1 select(mapColumn(",
+				"          CRASH_ID,",
+				"          UNITS_INVOLVED,",
+				"          DI_CREATEDDATE,",
+				"          DI_WORKFLOWFILENAME,",
+				"          DI_SOURCENAME,",
+				"          PID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"source1 union(byName: true)~> union1"
+			]
+		}
+	}
+}

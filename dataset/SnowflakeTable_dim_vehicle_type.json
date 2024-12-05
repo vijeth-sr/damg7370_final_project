@@ -1,0 +1,35 @@
+{
+	"name": "SnowflakeTable_dim_vehicle_type",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "VEHICLE_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "VEHICLE_TYPE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATED_DT",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "PID",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "DIM_VEHICLE_TYPE"
+		}
+	}
+}
