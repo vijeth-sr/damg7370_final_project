@@ -49,6 +49,12 @@
 				},
 				{
 					"name": "derivedColumn4"
+				},
+				{
+					"name": "select5"
+				},
+				{
+					"name": "select6"
 				}
 			],
 			"scriptLines": [
@@ -134,7 +140,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> nystg",
-				"derivedColumn3, derivedColumn2 union(byName: true,",
+				"select6, select5 union(byName: true,",
 				"     partitionBy('roundRobin', 2))~> union1",
 				"austinstg select(mapColumn(",
 				"          CRASH_ID,",
@@ -158,6 +164,10 @@
 				"     skipDuplicateMapOutputs: true) ~> select4",
 				"union1 derive(DI_created_dt = currentTimestamp(),",
 				"          pid = \"PIDbyDhrumilPatel\") ~> derivedColumn4",
+				"derivedColumn2 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select5",
+				"derivedColumn3 select(skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
 				"select4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
