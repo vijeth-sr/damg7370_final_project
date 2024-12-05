@@ -19,13 +19,23 @@
 					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "select2"
 				},
 				{
 					"name": "union1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -42,26 +52,34 @@
 				"     inferDriftedColumnTypes: true,",
 				"     format: 'table') ~> source1",
 				"source(output(",
-				"          VEHICLE_SK as string,",
-				"          VEHICLE_TYPE as string,",
-				"          DI_CREATED_DT as string,",
-				"          PID as string",
+				"          VEHICLE_SK as decimal(38,0)",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: true,",
 				"     inferDriftedColumnTypes: true,",
-				"     format: 'table') ~> source2",
-				"union1 select(mapColumn(",
-				"          CRASH_ID,",
-				"          UNITS_INVOLVED,",
-				"          DI_CREATEDDATE,",
-				"          DI_WORKFLOWFILENAME,",
-				"          DI_SOURCENAME,",
+				"     query: 'select NVL(MAX(VEHICLE_SK),0) as VEHICLE_SK  from DIM_vehicle_type',",
+				"     format: 'query') ~> source2",
+				"derivedColumn1 select(mapColumn(",
+				"          VEHICLE_SK,",
+				"          vehicle_type = UNITS_INVOLVED,",
+				"          DI_created_dt,",
 				"          PID",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
-				"source1 union(byName: true)~> union1"
+				"select3, source2 union(byName: true)~> union1",
+				"source1 select(mapColumn(",
+				"          CRASH_ID,",
+				"          UNITS_INVOLVED,",
+				"          PID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"union1 derive(DI_created_dt = currentTimestamp()) ~> derivedColumn1",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
