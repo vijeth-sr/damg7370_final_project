@@ -26,6 +26,15 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -103,15 +112,37 @@
 				"          other_death_count,",
 				"          other_serious_injury_count,",
 				"          micromobility_serious_injury_count,",
-				"          micromobility_death_count",
+				"          micromobility_death_count,",
+				"          CRASH_DATE",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 derive(DI_Created_dt = currentTimestamp(),",
-				"          total_injury_cnt = tot_injry_cnt + other_serious_injury_count +micromobility_serious_injury_count,",
-				"          total_fatal_cnt = death_cnt +other_death_count+micromobility_death_count,",
-				"          Motor_injr_cnt = motor_vehicle_serious_injury_count+bicycle_serious_injury_count+motorcycle_serious_injury_count,",
-				"          pid = \"pipiddp\") ~> derivedColumn1"
+				"          total_injury_cnt = toInteger(tot_injry_cnt) + toInteger(other_serious_injury_count) + toInteger(micromobility_serious_injury_count),",
+				"          total_fatal_cnt = toInteger(death_cnt) +toInteger(other_death_count)+toInteger(micromobility_death_count),",
+				"          Motor_fatal_cnt = toInteger(motor_vehicle_death_count) + toInteger(bicycle_death_count) + toInteger(motorcycle_death_count),",
+				"          pid = \"pipiddp\",",
+				"          Motor_injr_cnt = toInteger(motor_vehicle_serious_injury_count) + toInteger(bicycle_serious_injury_count) ,",
+				"          pedstrian_fatal_cnt = toInteger(pedestrian_death_count),",
+				"          pedstian_injr_cnt = toInteger(pedestrian_serious_injury_count)) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          CRASH_ID,",
+				"          total_injury_cnt,",
+				"          total_fatal_cnt,",
+				"          Motor_injr_cnt,",
+				"          Motor_fatal_cnt,",
+				"          pedstian_injr_cnt,",
+				"          pedstrian_fatal_cnt,",
+				"          CRASH_DATE,",
+				"          DI_Created_dt,",
+				"          pid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2, source2 union(byName: true)~> union1",
+				"union1 keyGenerate(output({undefined} as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1"
 			]
 		}
 	}
