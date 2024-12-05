@@ -1,0 +1,43 @@
+{
+	"name": "SnowflakeTablebdg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "VEHICLE_INVOLVED_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DI_CREATED_DT",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "PID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "VEHICLE_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "CRASH_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "BRG_VEHICLE_INVOLVED"
+		}
+	}
+}

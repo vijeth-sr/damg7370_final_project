@@ -1,0 +1,83 @@
+{
+	"name": "SnowflakeTable_CRASH_FACT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "CRASH_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "CRASH_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "TOTAL_INJURY_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOTAL_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTOR_INJR_OR_KILLED_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDSTRIAN_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTOR_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DI_CREATED_DT",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "PID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DATE_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "ADDRESS_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "SOURCE_ID_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "FACT_CRASH"
+		}
+	}
+}
