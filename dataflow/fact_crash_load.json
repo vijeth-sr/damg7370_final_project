@@ -33,7 +33,15 @@
 					"name": "source4"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_CRASH_FACT",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "select1"
@@ -232,16 +240,55 @@
 				"          CRASH_DATE,",
 				"          DI_Created_dt,",
 				"          pid = union1@pid,",
-				"          Di_workflow_name,",
+				"          Di_workflow_name = source3@Di_workflow_name,",
 				"          ADDRESS_SK,",
-				"          created_dt",
+				"          created_dt,",
+				"          DATE_SK",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"surrogateKey1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"surrogateKey1, source4 lookup(CRASH_DATE == DATE,",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup2"
+				"     broadcast: 'auto')~> lookup2",
+				"select3 sink(allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     input(",
+				"          CRASH_SK as string,",
+				"          CRASH_ID as string,",
+				"          TOTAL_INJURY_CNT as string,",
+				"          TOTAL_FATAL_CNT as string,",
+				"          MOTOR_INJR_OR_KILLED_CNT as string,",
+				"          PEDSTRIAN_FATAL_CNT as string,",
+				"          MOTOR_FATAL_CNT as string,",
+				"          DI_CREATED_DT as string,",
+				"          PID as string,",
+				"          DATE_SK as string,",
+				"          ADDRESS_SK as string,",
+				"          SOURCE_ID_SK as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CRASH_SK,",
+				"          CRASH_ID,",
+				"          TOTAL_INJURY_CNT = total_injury_cnt,",
+				"          TOTAL_FATAL_CNT = total_fatal_cnt,",
+				"          MOTOR_INJR_OR_KILLED_CNT = Motor_injr_cnt,",
+				"          PEDSTRIAN_FATAL_CNT = pedstrian_fatal_cnt,",
+				"          MOTOR_FATAL_CNT = Motor_fatal_cnt,",
+				"          DI_CREATED_DT = created_dt,",
+				"          PID = pid,",
+				"          DATE_SK,",
+				"          ADDRESS_SK",
+				"     )) ~> sink1"
 			]
 		}
 	}
