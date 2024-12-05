@@ -64,9 +64,9 @@
 				"     query: 'select NVL(MAX(VEHICLE_SK),0) as VEHICLE_SK  from DIM_vehicle_type',",
 				"     format: 'query') ~> source2",
 				"derivedColumn1 select(mapColumn(",
-				"          VEHICLE_SK = union1@VEHICLE_SK,",
-				"          vehicle_type = UNITS_INVOLVED,",
 				"          PID,",
+				"          UNITS_INVOLVED,",
+				"          VEHICLE_SK,",
 				"          DI_created_dt",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
@@ -100,7 +100,9 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          VEHICLE_TYPE = vehicle_type,",
+				"          VEHICLE_SK,",
+				"          VEHICLE_TYPE = UNITS_INVOLVED,",
+				"          DI_CREATED_DT = DI_created_dt,",
 				"          PID",
 				"     )) ~> sink1"
 			]
