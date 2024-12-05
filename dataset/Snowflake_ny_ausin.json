@@ -1,0 +1,41 @@
+{
+	"name": "Snowflake_ny_ausin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "CRASH_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "UNITS_INVOLVED",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATEDDATE",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "DI_WORKFLOWFILENAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_SOURCENAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PID",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "STG_NY_AUSTIN_VEHICLE_TYPE"
+		}
+	}
+}

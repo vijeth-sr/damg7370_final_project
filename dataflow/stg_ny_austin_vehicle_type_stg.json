@@ -19,7 +19,15 @@
 					"name": "nystg"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Snowflake_ny_ausin",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "union1"
@@ -157,7 +165,26 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select4",
 				"union1 derive(DI_created_dt = currentTimestamp(),",
-				"          pid = \"PIDbyDhrumilPatel\") ~> derivedColumn4"
+				"          pid = \"PIDbyDhrumilPatel\") ~> derivedColumn4",
+				"select4 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CRASH_ID as string,",
+				"          UNITS_INVOLVED as string,",
+				"          DI_CREATEDDATE as string,",
+				"          DI_WORKFLOWFILENAME as string,",
+				"          DI_SOURCENAME as string,",
+				"          PID as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> sink1"
 			]
 		}
 	}
