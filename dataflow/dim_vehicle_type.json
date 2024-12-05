@@ -100,7 +100,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          DI_CREATED_DT = DI_created_dt,",
+				"          VEHICLE_TYPE = vehicle_type,",
 				"          PID",
 				"     )) ~> sink1"
 			]
