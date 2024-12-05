@@ -186,7 +186,15 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink1"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CRASH_ID,",
+				"          UNITS_INVOLVED = units_involved,",
+				"          DI_CREATEDDATE = DI_created_dt,",
+				"          DI_WORKFLOWFILENAME = Di_workflow_name,",
+				"          DI_SOURCENAME = DI_source_name,",
+				"          PID = pid",
+				"     )) ~> sink1"
 			]
 		}
 	}
