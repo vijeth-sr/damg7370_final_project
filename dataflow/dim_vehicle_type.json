@@ -21,6 +21,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_dim_vehicle_type",
+						"type": "DatasetReference"
+					},
 					"name": "sink1"
 				}
 			],
@@ -78,8 +82,27 @@
 				"union1 derive(DI_created_dt = currentTimestamp()) ~> derivedColumn1",
 				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     input(",
+				"          VEHICLE_SK as string,",
+				"          VEHICLE_TYPE as string,",
+				"          DI_CREATED_DT as string,",
+				"          PID as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          VEHICLE_SK,",
+				"          VEHICLE_TYPE = vehicle_type,",
+				"          DI_CREATED_DT = DI_created_dt,",
+				"          PID",
+				"     )) ~> sink1"
 			]
 		}
 	}
