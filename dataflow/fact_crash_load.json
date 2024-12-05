@@ -24,6 +24,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "source3"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_dimDate",
+						"type": "DatasetReference"
+					},
+					"name": "source4"
 				}
 			],
 			"sinks": [],
@@ -45,6 +52,12 @@
 				},
 				{
 					"name": "lookup1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "lookup2"
 				}
 			],
 			"scriptLines": [
@@ -121,6 +134,26 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> source3",
+				"source(output(",
+				"          DATE_SK as string,",
+				"          DATE as string,",
+				"          DATE_IN_WORDS as string,",
+				"          DAY_OF_MONTH as string,",
+				"          MONTH as string,",
+				"          MONTH_OF_YEAR as string,",
+				"          YEAR as string,",
+				"          DAY_OF_WEEK as string,",
+				"          HOUR as string,",
+				"          MINUTES as string,",
+				"          SECOND as string,",
+				"          DI_CREATED_DATE as string,",
+				"          DI_WORKFLOW_NAME as string,",
+				"          SEASON as string,",
+				"          WEEKEND_INDICATOR as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source4",
 				"source1 select(mapColumn(",
 				"          CRASH_ID,",
 				"          tot_injry_cnt,",
@@ -139,7 +172,10 @@
 				"          micromobility_death_count,",
 				"          CRASH_DATE,",
 				"          latitude,",
-				"          longitude",
+				"          longitude,",
+				"          street_name,",
+				"          rpt_block_num,",
+				"          rpt_street_name",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
@@ -148,7 +184,7 @@
 				"          total_fatal_cnt = toInteger(death_cnt) +toInteger(other_death_count)+toInteger(micromobility_death_count),",
 				"          Motor_fatal_cnt = toInteger(motor_vehicle_death_count) + toInteger(bicycle_death_count) + toInteger(motorcycle_death_count),",
 				"          pid = \"pipiddp\",",
-				"          Motor_injr_cnt = toInteger(motor_vehicle_serious_injury_count) + toInteger(bicycle_serious_injury_count) ,",
+				"          Motor_injr_cnt = toInteger(motor_vehicle_serious_injury_count) + toInteger(bicycle_serious_injury_count),",
 				"          pedstrian_fatal_cnt = toInteger(pedestrian_death_count),",
 				"          pedstian_injr_cnt = toInteger(pedestrian_serious_injury_count)) ~> derivedColumn1",
 				"derivedColumn1 select(mapColumn(",
@@ -163,7 +199,10 @@
 				"          DI_Created_dt,",
 				"          pid,",
 				"          latitude,",
-				"          longitude",
+				"          longitude,",
+				"          street_name,",
+				"          rpt_block_num,",
+				"          rpt_street_name",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
@@ -171,11 +210,38 @@
 				"union1 keyGenerate(output(CRASH_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1, source3 lookup(union1@latitude == source3@latitude",
-				"     && union1@longitude == source3@longitude,",
+				"lookup2, source3 lookup(union1@latitude == source3@latitude",
+				"     && union1@longitude == source3@longitude",
+				"     && iif(\r",
+				"    (isNull(rpt_block_num)) || (rpt_street_name == 'NOT REPORTED') , \r",
+				"    street_name, \r",
+				"        concat(trim(rpt_block_num), ' ', upper(trim(rpt_street_name) ))\r",
+				") == {street name},",
 				"     multiple: false,",
 				"     pickup: 'any',",
-				"     broadcast: 'auto')~> lookup1"
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 select(mapColumn(",
+				"          CRASH_SK,",
+				"          CRASH_ID,",
+				"          total_injury_cnt,",
+				"          total_fatal_cnt,",
+				"          Motor_injr_cnt,",
+				"          Motor_fatal_cnt,",
+				"          pedstian_injr_cnt,",
+				"          pedstrian_fatal_cnt,",
+				"          CRASH_DATE,",
+				"          DI_Created_dt,",
+				"          pid = union1@pid,",
+				"          Di_workflow_name,",
+				"          ADDRESS_SK,",
+				"          created_dt",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"surrogateKey1 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup2"
 			]
 		}
 	}
