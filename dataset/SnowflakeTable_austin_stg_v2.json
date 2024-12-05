@@ -231,7 +231,7 @@
 		],
 		"typeProperties": {
 			"schema": "STAGING",
-			"table": "FACT_CRASH"
+			"table": "STG_AUSTIN_V2"
 		}
 	}
 }
