@@ -1,0 +1,237 @@
+{
+	"name": "SnowflakeTable_austin_stg_v2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_AUSTINV2_stg",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "CRASH_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "crash_fatal_fl",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "case_id",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "street_name",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "rpt_block_num",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "rpt_street_name",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "rpt_street_sfx",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "crash_speed_limit",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "road_constr_zone_fl",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "latitude",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "longitude",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "crash_sev_id",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "sus_serious_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "nonincap_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "poss_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "non_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "unkn_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "tot_injry_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "death_cnt",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "units_involved",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "point",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "motor_vehicle_death_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "motor_vehicle_serious_injury_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "bicycle_death_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "bicycle_serious_injury_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "pedestrian_death_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "pedestrian_serious_injury_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "motorcycle_death_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "motorcycle_serious_injury_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "other_death_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "other_serious_injury_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "onsys_fl",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "private_dr_fl",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "micromobility_serious_injury_count",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "micromobility_death_count",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CRASH_DATE",
+				"type": "DATE"
+			},
+			{
+				"name": "Crash_timestamp",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "Is_deleted",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "Is_temporary_record",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "Law_enforcement_fatality_count",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "Reported_street_prefix",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CITY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "Di_workflow_name",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "created_dt",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "pid",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "STG_CHICAGO_V2"
+		}
+	}
+}
