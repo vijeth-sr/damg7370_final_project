@@ -17,6 +17,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable_dim_address",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
 				}
 			],
 			"sinks": [],
@@ -37,7 +44,7 @@
 					"name": "surrogateKey1"
 				},
 				{
-					"name": "select3"
+					"name": "lookup1"
 				}
 			],
 			"scriptLines": [
@@ -100,6 +107,20 @@
 				"     inferDriftedColumnTypes: true,",
 				"     query: 'select NVL(MAX(CRASH_SK),0) as CRASH_SK  from Fact_crash',",
 				"     format: 'query') ~> source2",
+				"source(output(",
+				"          latitude as string,",
+				"          longitude as string,",
+				"          CITY as string,",
+				"          COUNTRY as string,",
+				"          Di_workflow_name as string,",
+				"          ADDRESS_SK as string,",
+				"          created_dt as string,",
+				"          pid as string,",
+				"          {street name} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source3",
 				"source1 select(mapColumn(",
 				"          CRASH_ID,",
 				"          tot_injry_cnt,",
@@ -116,7 +137,9 @@
 				"          other_serious_injury_count,",
 				"          micromobility_serious_injury_count,",
 				"          micromobility_death_count,",
-				"          CRASH_DATE",
+				"          CRASH_DATE,",
+				"          latitude,",
+				"          longitude",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
@@ -146,21 +169,10 @@
 				"union1 keyGenerate(output(CRASH_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 select(mapColumn(",
-				"          CRASH_ID,",
-				"          total_injury_cnt,",
-				"          total_fatal_cnt,",
-				"          Motor_injr_cnt,",
-				"          Motor_fatal_cnt,",
-				"          pedstian_injr_cnt,",
-				"          pedstrian_fatal_cnt,",
-				"          CRASH_DATE,",
-				"          DI_Created_dt,",
-				"          pid,",
-				"          CRASH_SK",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select3"
+				"surrogateKey1, source3 lookup(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1"
 			]
 		}
 	}
