@@ -35,6 +35,12 @@
 				},
 				{
 					"name": "derivedColumn3"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "derivedColumn4"
 				}
 			],
 			"scriptLines": [
@@ -131,18 +137,27 @@
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"nystg select(mapColumn(",
 				"          CRASH_ID = COLLISION_ID,",
-				"          VEHICLE_TYPE_CODE,",
-				"          DI_CREATEDDATE",
+				"          units_involved = VEHICLE_TYPE_CODE",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"select3 derive(DI_Created_dt = currentUTC(),",
-				"          pid = \"Piddhjsjsj446GRE33fb\",",
+				"select3 derive(Di_workflow_name = \"Motor_Vehicle_Collisions_-_Crashes_20241129\",",
 				"          DI_source_name = \"stg_ny\") ~> derivedColumn2",
-				"select2 derive(DI_Created_dt = currentUTC(),",
-				"          pid = \"Piddhjsjsj446GRE33fb\",",
+				"select2 derive(Di_workflow_name = \"Austin_Crash_Report_Data_-_Crash_Level_Records_20241129\",",
 				"          DI_source_name = \"stg_austin\",",
-				"     partitionBy('hash', 1)) ~> derivedColumn3"
+				"     partitionBy('hash', 1)) ~> derivedColumn3",
+				"derivedColumn4 select(mapColumn(",
+				"          crash_id = CRASH_ID,",
+				"          units_involved,",
+				"          DI_CreatedDate = DI_created_dt,",
+				"          DI_WorkflowFileName = Di_workflow_name,",
+				"          DI_SourceName = DI_source_name,",
+				"          pid",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"union1 derive(DI_created_dt = currentTimestamp(),",
+				"          pid = \"PIDbyDhrumilPatel\") ~> derivedColumn4"
 			]
 		}
 	}
