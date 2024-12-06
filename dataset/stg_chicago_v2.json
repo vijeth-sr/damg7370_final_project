@@ -1,0 +1,85 @@
+{
+	"name": "stg_chicago_v2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "CRASH_RECORD_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CRASH_DATE",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "CRASH_TIME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRIM_CONTRIBUTORY_CAUSE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "SEC_CONTRIBUTORY_CAUSE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "STREET_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "INJURIES_TOTAL",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "INJURIES_FATAL",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "LATITUDE",
+				"type": "FLOAT"
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "FLOAT"
+			},
+			{
+				"name": "CONTRIBUTORY_FACTOR",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CITY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_SOURCE_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATED_DATE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_WORKFLOW_NAME",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "STG_CHICAGO_V2"
+		}
+	}
+}

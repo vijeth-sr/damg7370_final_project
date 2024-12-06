@@ -15,10 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "stage_chicago_v2",
+						"referenceName": "stg_chicago_v2",
 						"type": "DatasetReference"
 					},
-					"name": "sinkStageChicago"
+					"name": "sinkChicagoV2"
 				}
 			],
 			"transformations": [
@@ -128,7 +128,7 @@
 				"          INJURIES_FATAL as string,",
 				"          LATITUDE as string,",
 				"          LONGITUDE as string,",
-				"          CONTRIBUTING_FACTOR_MERGED as string,",
+				"          CONTRIBUTORY_FACTOR as string,",
 				"          CITY as string,",
 				"          COUNTRY as string,",
 				"          DI_SOURCE_NAME as string,",
@@ -154,13 +154,13 @@
 				"          INJURIES_FATAL,",
 				"          LATITUDE,",
 				"          LONGITUDE,",
-				"          CONTRIBUTING_FACTOR_MERGED = CONTRIBUTING_FACTOR,",
+				"          CONTRIBUTORY_FACTOR = CONTRIBUTING_FACTOR,",
 				"          CITY,",
 				"          COUNTRY,",
 				"          DI_SOURCE_NAME,",
 				"          DI_CREATED_DATE,",
 				"          DI_WORKFLOW_NAME",
-				"     )) ~> sinkStageChicago"
+				"     )) ~> sinkChicagoV2"
 			]
 		}
 	}
