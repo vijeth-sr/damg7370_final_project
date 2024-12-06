@@ -27,6 +27,15 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "union1"
 				}
 			],
 			"scriptLines": [
@@ -92,7 +101,8 @@
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourcesnowflakechicagostage",
 				"sourcesnowflakechicagostage derive(CRASH_DATE = toDate(trim(CRASH_DATE)),",
-				"          CRASH_TIME = substring(toString(CRASH_DATE), 11, 8),",
+				"          CRASH_TIME = trim(substring(CRASH_DATE, 11, 8))",
+				",",
 				"          PRIM_CONTRIBUTORY_CAUSE = upper(trim(PRIM_CONTRIBUTORY_CAUSE)),",
 				"          SEC_CONTRIBUTORY_CAUSE = upper(trim(SEC_CONTRIBUTORY_CAUSE)),",
 				"          STREET_NAME = upper(trim(STREET_NAME)),",
@@ -101,8 +111,11 @@
 				"          LATITUDE = iif(isNull(LATITUDE), toDouble(0), LATITUDE),",
 				"          LONGITUDE = iif(isNull(LONGITUDE), toDouble(0), LONGITUDE),",
 				"          CONTRIBUTING_FACTOR = upper(trim(PRIM_CONTRIBUTORY_CAUSE))) ~> derivedColumn1",
-				"derivedColumn1 derive(CONTRIBUTING_FACTOR = upper(trim(SEC_CONTRIBUTORY_CAUSE))) ~> derivedColumn2",
-				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"derivedColumn3 derive(CONTRIBUTING_FACTOR = upper(trim(SEC_CONTRIBUTORY_CAUSE))) ~> derivedColumn2",
+				"derivedColumn1 derive(CONTRIBUTING_FACTOR = upper(trim(PRIM_CONTRIBUTORY_CAUSE))) ~> derivedColumn3",
+				"union1 filter(!isNull(CONTRIBUTING_FACTOR)) ~> filter1",
+				"derivedColumn2, derivedColumn3 union(byName: true)~> union1",
+				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          CRASH_RECORD_ID as string,",
