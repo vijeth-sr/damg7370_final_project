@@ -30,6 +30,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DI_WORKFLOW_NAME as string (\"mittul-adf\")",
+				"}",
 				"source(output(",
 				"          REPORT_NUMBER as string,",
 				"          LOCAL_CASE_NUMBER as string,",
