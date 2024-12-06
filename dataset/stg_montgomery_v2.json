@@ -1,0 +1,73 @@
+{
+	"name": "stg_montgomery_v2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "REPORT_NUMBER",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOCAL_CASE_NUMBER",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CRASH_DATE",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "CRASH_TIME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "STREET_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CONTRIBUTORY_FACTOR",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LATITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LOCATION",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CITY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_SOURCE_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATED_DATE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_WORKFLOW_NAME",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "STG_MONTGOMERY_V2"
+		}
+	}
+}

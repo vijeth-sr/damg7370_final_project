@@ -12,10 +12,21 @@
 					"name": "stageMontgomeryRaw"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "stg_montgomery_v2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkMontgomeryV2"
+				}
+			],
 			"transformations": [
 				{
 					"name": "filter1"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -66,7 +77,55 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> stageMontgomeryRaw",
-				"stageMontgomeryRaw filter(!isNull(LOCATION)) ~> filter1"
+				"stageMontgomeryRaw filter(!isNull(LOCATION)) ~> filter1",
+				"filter1 derive(REPORT_NUMBER = upper(trim(REPORT_NUMBER)),",
+				"          LOCAL_CASE_NUMBER = upper(trim(LOCAL_CASE_NUMBER)),",
+				"          CRASH_DATE = toDate(trim(CRASH_DATE_TIME)),",
+				"          CRASH_TIME = trim(substring(CRASH_DATE_TIME, 11, 9)),",
+				"          STREET_NAME = iif(isNull(ROAD_NAME), 'N/A', upper(trim(ROAD_NAME))),",
+				"          CONTRIBUTORY_FACTOR = iif(isNull(COLLISION_TYPE), 'N/A', upper(trim(COLLISION_TYPE)))) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          REPORT_NUMBER as string,",
+				"          LOCAL_CASE_NUMBER as string,",
+				"          CRASH_DATE as string,",
+				"          CRASH_TIME as string,",
+				"          STREET_NAME as string,",
+				"          CONTRIBUTORY_FACTOR as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          LOCATION as string,",
+				"          CITY as string,",
+				"          COUNTRY as string,",
+				"          DI_SOURCE_NAME as string,",
+				"          DI_CREATED_DATE as string,",
+				"          DI_WORKFLOW_NAME as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          REPORT_NUMBER,",
+				"          LOCAL_CASE_NUMBER,",
+				"          CRASH_DATE,",
+				"          CRASH_TIME,",
+				"          STREET_NAME,",
+				"          CONTRIBUTORY_FACTOR,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          LOCATION,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_SOURCE_NAME,",
+				"          DI_CREATED_DATE,",
+				"          DI_WORKFLOW_NAME",
+				"     )) ~> sinkMontgomeryV2"
 			]
 		}
 	}
