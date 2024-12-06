@@ -48,6 +48,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -103,21 +106,16 @@
 				"extract4 derive(CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_5,",
 				"          VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_5) ~> extract5",
 				"extract5, extract4, extract3, extract2, extract1 union(byName: true)~> union1",
-				"union1 filter(!isNull(CONTRIBUTING_FACTOR_VEHICLE) && !isNull(VEHICLE_TYPE_CODE)",
-				") ~> filter1",
+				"union1 filter(!isNull(CONTRIBUTING_FACTOR_VEHICLE) && !isNull(VEHICLE_TYPE_CODE)) ~> filter1",
 				"filter1 derive(DI_CreateDate = currentDate(),",
 				"          DI_Workfile_Name = \"NYC_STAGING_WORKFLOW\",",
 				"          CRASH_DATETIME = toTimestamp(concat(CRASH_DATE, ' ', CRASH_TIME), 'yyyy-MM-dd HH:mm'),",
-				"          Street_Name_derived = concat(\r",
-				"    trim(coalesce(toString(ON_STREET_NAME), '')),\r",
-				"    ' ',\r",
-				"    trim(coalesce(toString(OFF_STREET_NAME), ''))\r",
-				")\r",
-				"\r",
-				",",
 				"          City = \"New York\",",
-				"          Country = \"United States\") ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"          Country = \"United States\",",
+				"          on_street_name_clean = trim(regexReplace(toString(ON_STREET_NAME), '\\\\d+', '')),",
+				"          off_street_name_clean = trim(regexReplace(toString(OFF_STREET_NAME), '\\\\d+', ''))) ~> derivedColumn1",
+				"derivedColumn1 derive(street_name_derived = concat(off_street_name_clean, off_street_name_clean)) ~> derivedColumn2",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          COLLISION_ID as string,",
