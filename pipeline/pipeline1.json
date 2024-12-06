@@ -51,7 +51,7 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"source1": {
-								"tableName": "STG_NYC_CRASHES_RAW"
+								"tableName": "STG_NYC_RAW"
 							},
 							"sink1": {
 								"tableName": "STG_NYC_V2"
