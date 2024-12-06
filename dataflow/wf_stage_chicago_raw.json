@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "stage_chicago_v1",
+						"referenceName": "stg_chicago_v1",
 						"type": "DatasetReference"
 					},
 					"name": "dsstgchicago"
