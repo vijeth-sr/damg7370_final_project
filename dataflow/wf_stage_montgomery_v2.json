@@ -6,14 +6,18 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable1",
+						"referenceName": "stg_montgomery_v1",
 						"type": "DatasetReference"
 					},
 					"name": "stageMontgomeryRaw"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          REPORT_NUMBER as string,",
@@ -61,7 +65,8 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> stageMontgomeryRaw"
+				"     format: 'table') ~> stageMontgomeryRaw",
+				"stageMontgomeryRaw filter(!isNull(LOCATION)) ~> filter1"
 			]
 		}
 	}
