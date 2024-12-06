@@ -158,7 +158,7 @@
 				"          CRASH_DATETIME,",
 				"          LATITUDE,",
 				"          LONGITUDE,",
-				"          STREET_NAME = Street_Name_derived,",
+				"          STREET_NAME = street_name_derived,",
 				"          ZIP_CODE,",
 				"          NUMBER_OF_PEDESTRIANS_KILLED,",
 				"          NUMBER_OF_PEDESTRIANS_INJURED,",
