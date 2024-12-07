@@ -144,7 +144,7 @@
 				"     partitionBy('roundRobin', 2))~> union1",
 				"austinstg select(mapColumn(",
 				"          CRASH_ID,",
-				"          units_involved,",
+				"          UNITS_INVOLVED = units_involved,",
 				"          Di_workflow_name",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
