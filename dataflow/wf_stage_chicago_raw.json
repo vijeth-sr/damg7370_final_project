@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "stg_chicago_v1",
+						"referenceName": "stage_chicago_v1",
 						"type": "DatasetReference"
 					},
 					"name": "dsstgchicago"
@@ -151,7 +151,6 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     recreate:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
