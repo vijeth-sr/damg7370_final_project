@@ -7,52 +7,12 @@
 		},
 		"parameters": {
 			"tableName": {
-				"type": "string",
-				"defaultValue": "DIM_CONTRIB_FACTOR"
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-		"schema": [
-			{
-				"name": "CONTRIBUTION",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "CODE",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "AUSTIN",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "CHICAGO",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "NEWYORK",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "MONTGOMERY",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "IS_ACTIVE",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "SCD_VERSION",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"schema": "STAGING",
 			"table": {

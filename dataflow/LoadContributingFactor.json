@@ -1,0 +1,74 @@
+{
+	"name": "LoadContributingFactor",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "TimeStamp"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          DESCRIPTION as string,",
+				"          CODE as decimal(38,0),",
+				"          AUSTIN as string,",
+				"          CHICAGO as string,",
+				"          NEWYORK as string,",
+				"          MONTGOMERY as string,",
+				"          IS_ACTIVE as decimal(1,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source1",
+				"source1 derive(LOADED_TIMESTAMP = toString(currentTimestamp()),",
+				"          DESCRIPTION = trim(DESCRIPTION),",
+				"          AUSTIN = trim(AUSTIN),",
+				"          CHICAGO = trim(CHICAGO),",
+				"          NEWYORK = trim(NEWYORK),",
+				"          MONTGOMERY = trim(MONTGOMERY),",
+				"          SCD_VERSION = 0) ~> TimeStamp",
+				"TimeStamp sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CONTRIBUTION = DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE,",
+				"          LOADED_TIMESTAMP,",
+				"          SCD_VERSION",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
