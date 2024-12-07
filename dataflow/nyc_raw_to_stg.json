@@ -1,5 +1,5 @@
 {
-	"name": "dataflow2",
+	"name": "nyc_raw_to_stg",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

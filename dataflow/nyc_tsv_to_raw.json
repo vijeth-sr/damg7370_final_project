@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "nyc_tsv_to_raw",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
