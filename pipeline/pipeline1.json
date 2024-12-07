@@ -22,7 +22,7 @@
 						"type": "DataFlowReference",
 						"datasetParameters": {
 							"stgnycraw": {
-								"tableName": "STG_NYC_CRASHES_RAW"
+								"tableName": "STG_NYC_RAW"
 							}
 						}
 					},

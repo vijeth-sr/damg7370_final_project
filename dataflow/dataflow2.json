@@ -114,7 +114,7 @@
 				"          Country = \"United States\",",
 				"          on_street_name_clean = trim(regexReplace(toString(ON_STREET_NAME), '\\\\d+', '')),",
 				"          off_street_name_clean = trim(regexReplace(toString(OFF_STREET_NAME), '\\\\d+', ''))) ~> derivedColumn1",
-				"derivedColumn1 derive(street_name_derived = concat(off_street_name_clean, off_street_name_clean)) ~> derivedColumn2",
+				"derivedColumn1 derive(street_name_derived = concat(on_street_name_clean, off_street_name_clean)) ~> derivedColumn2",
 				"derivedColumn2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
