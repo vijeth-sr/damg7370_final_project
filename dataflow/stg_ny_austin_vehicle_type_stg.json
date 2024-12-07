@@ -151,7 +151,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"nystg select(mapColumn(",
 				"          CRASH_ID = COLLISION_ID,",
-				"          units_involved = VEHICLE_TYPE_CODE",
+				"          UNITS_INVOLVED = VEHICLE_TYPE_CODE",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
