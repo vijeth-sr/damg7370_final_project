@@ -1,0 +1,165 @@
+{
+	"name": "dataset_load_stg_autin_in_snowflake",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Austin_Crash_Report_Data_-_Crash_Level_Records_20241129.parquet",
+				"container": "bronze-final-project-container"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "ID",
+				"type": "UTF8"
+			},
+			{
+				"name": "Crash_ID",
+				"type": "UTF8"
+			},
+			{
+				"name": "crash_fatal_fl",
+				"type": "UTF8"
+			},
+			{
+				"name": "case_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "Primary_address",
+				"type": "UTF8"
+			},
+			{
+				"name": "rpt_block_num",
+				"type": "UTF8"
+			},
+			{
+				"name": "rpt_street_name",
+				"type": "UTF8"
+			},
+			{
+				"name": "rpt_street_sfx",
+				"type": "UTF8"
+			},
+			{
+				"name": "crash_speed_limit",
+				"type": "UTF8"
+			},
+			{
+				"name": "road_constr_zone_fl",
+				"type": "UTF8"
+			},
+			{
+				"name": "latitude",
+				"type": "UTF8"
+			},
+			{
+				"name": "longitude",
+				"type": "UTF8"
+			},
+			{
+				"name": "crash_sev_id",
+				"type": "UTF8"
+			},
+			{
+				"name": "sus_serious_injry_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "nonincap_injry_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "poss_injry_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "non_injry_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "unkn_injry_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "tot_injry_cnt",
+				"type": "INT32"
+			},
+			{
+				"name": "death_cnt",
+				"type": "UTF8"
+			},
+			{
+				"name": "units_involved",
+				"type": "UTF8"
+			},
+			{
+				"name": "point",
+				"type": "UTF8"
+			},
+			{
+				"name": "motor_vehicle_fatal_injr_count",
+				"type": "INT32"
+			},
+			{
+				"name": "bicycle_fatal_injr_count",
+				"type": "INT32"
+			},
+			{
+				"name": "pedestrian_fatal_injury_count",
+				"type": "INT32"
+			},
+			{
+				"name": "other_fatal_injr_count",
+				"type": "INT32"
+			},
+			{
+				"name": "onsys_fl",
+				"type": "UTF8"
+			},
+			{
+				"name": "private_dr_fl",
+				"type": "UTF8"
+			},
+			{
+				"name": "micromobility_serious_injury_count",
+				"type": "UTF8"
+			},
+			{
+				"name": "micromobility_death_count",
+				"type": "UTF8"
+			},
+			{
+				"name": "Crash_timestamp_US_Central",
+				"type": "INT96"
+			},
+			{
+				"name": "Crash_date",
+				"type": "DATE"
+			},
+			{
+				"name": "Is_deleted",
+				"type": "UTF8"
+			},
+			{
+				"name": "Is_temporary_record",
+				"type": "UTF8"
+			},
+			{
+				"name": "Law_enforcement_fatality_count",
+				"type": "UTF8"
+			},
+			{
+				"name": "Reported_street_prefix",
+				"type": "UTF8"
+			}
+		]
+	}
+}

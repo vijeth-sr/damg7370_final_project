@@ -1,0 +1,10 @@
+{
+	"name": "ls_stgadfseattle",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://stgdallas.dfs.core.windows.net/"
+		}
+	}
+}

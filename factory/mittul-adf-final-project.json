@@ -1,9 +1,0 @@
-{
-	"name": "mittul-adf-final-project",
-	"location": "eastus",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "b5afd916-7cf4-4eb7-ab81-9f7bf1cc4a8f",
-		"tenantId": "0799c53e-ca9a-49e8-8901-064a6412a41d"
-	}
-}

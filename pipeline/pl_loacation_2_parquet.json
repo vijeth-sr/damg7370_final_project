@@ -1,9 +1,9 @@
 {
-	"name": "pl_stage_chicago_v2",
+	"name": "pl_loacation_2_parquet",
 	"properties": {
 		"activities": [
 			{
-				"name": "pl_stage_chicago_v2",
+				"name": "df_loation_dim",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,13 +16,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "wf_stage_chicago_v2",
+						"referenceName": "df_loation_dim",
 						"type": "DataFlowReference",
 						"parameters": {
-							"DI_WORKFLOW_NAME": {
-								"value": "'@{pipeline().RunId}'",
-								"type": "Expression"
-							}
+							"JObID": "\"1\""
 						}
 					},
 					"compute": {
@@ -34,12 +31,11 @@
 			}
 		],
 		"parameters": {
-			"DI_WORKFLOW_NAME": {
-				"type": "string"
+			"jobid": {
+				"type": "String",
+				"defaultValue": "\"1\""
 			}
 		},
-		"annotations": [],
-		"lastPublishTime": "2024-12-01T22:29:51Z"
-	},
-	"type": "Microsoft.DataFactory/factories/pipelines"
+		"annotations": []
+	}
 }

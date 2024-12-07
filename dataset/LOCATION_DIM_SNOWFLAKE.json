@@ -1,0 +1,55 @@
+{
+	"name": "LOCATION_DIM_SNOWFLAKE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_DIM_LOCATION",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "ADDRESS_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "STREET_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "CITY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LATITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_WORKFLOW_NAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DI_CREATED_DT",
+				"type": "TIMESTAMP_NTZ"
+			},
+			{
+				"name": "PID",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "STAGING",
+			"table": "DIM_ADDRESS"
+		}
+	}
+}

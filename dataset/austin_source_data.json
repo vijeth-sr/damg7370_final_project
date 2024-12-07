@@ -1,0 +1,205 @@
+{
+	"name": "austin_source_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "austin_deliminated",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Filename": {
+				"type": "string",
+				"defaultValue": "Austin_Crash_Report_Data_-_Crash_Level_Records_20241129.tsv"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().Filename",
+					"type": "Expression"
+				},
+				"fileSystem": "rawcontainer"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ID",
+				"type": "String"
+			},
+			{
+				"name": "Crash ID",
+				"type": "String"
+			},
+			{
+				"name": "crash_fatal_fl",
+				"type": "String"
+			},
+			{
+				"name": "case_id",
+				"type": "String"
+			},
+			{
+				"name": "Primary address",
+				"type": "String"
+			},
+			{
+				"name": "Secondary address",
+				"type": "String"
+			},
+			{
+				"name": "rpt_block_num",
+				"type": "String"
+			},
+			{
+				"name": "rpt_street_name",
+				"type": "String"
+			},
+			{
+				"name": "rpt_street_sfx",
+				"type": "String"
+			},
+			{
+				"name": "crash_speed_limit",
+				"type": "String"
+			},
+			{
+				"name": "road_constr_zone_fl",
+				"type": "String"
+			},
+			{
+				"name": "latitude",
+				"type": "String"
+			},
+			{
+				"name": "longitude",
+				"type": "String"
+			},
+			{
+				"name": "crash_sev_id",
+				"type": "String"
+			},
+			{
+				"name": "sus_serious_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "nonincap_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "poss_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "non_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "unkn_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "tot_injry_cnt",
+				"type": "String"
+			},
+			{
+				"name": "death_cnt",
+				"type": "String"
+			},
+			{
+				"name": "units_involved",
+				"type": "String"
+			},
+			{
+				"name": "point",
+				"type": "String"
+			},
+			{
+				"name": "motor_vehicle_death_count",
+				"type": "String"
+			},
+			{
+				"name": "motor_vehicle_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "bicycle_death_count",
+				"type": "String"
+			},
+			{
+				"name": "bicycle_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "pedestrian_death_count",
+				"type": "String"
+			},
+			{
+				"name": "pedestrian_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "motorcycle_death_count",
+				"type": "String"
+			},
+			{
+				"name": "motorcycle_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "other_death_count",
+				"type": "String"
+			},
+			{
+				"name": "other_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "onsys_fl",
+				"type": "String"
+			},
+			{
+				"name": "private_dr_fl",
+				"type": "String"
+			},
+			{
+				"name": "micromobility_serious_injury_count",
+				"type": "String"
+			},
+			{
+				"name": "micromobility_death_count",
+				"type": "String"
+			},
+			{
+				"name": "Crash timestamp (US/Central)",
+				"type": "String"
+			},
+			{
+				"name": "Crash timestamp",
+				"type": "String"
+			},
+			{
+				"name": "Is deleted",
+				"type": "String"
+			},
+			{
+				"name": "Is temporary record",
+				"type": "String"
+			},
+			{
+				"name": "Law enforcement fatality count",
+				"type": "String"
+			},
+			{
+				"name": "Reported street prefix",
+				"type": "String"
+			}
+		]
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "Austin_source_to_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Austin_Crash_Report_Data_-_Crash_Level_Records_20241129.parquet",
+				"container": "bronze-final-project-container"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

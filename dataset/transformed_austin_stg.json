@@ -1,20 +1,19 @@
 {
-	"name": "ds_Parquet_staging",
+	"name": "transformed_austin_stg",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_stgtabledamge7370",
+			"referenceName": "ls_blob_storage",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation",
-				"fileSystem": "silvercontainer"
+				"type": "AzureBlobStorageLocation",
+				"container": "silver-final-project-container"
 			},
 			"compressionCodec": "snappy"
 		},
 		"schema": []
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

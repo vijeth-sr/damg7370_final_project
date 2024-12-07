@@ -1,0 +1,45 @@
+{
+	"name": "ds_source_location_2_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_blob_storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "dim_location_skt",
+				"container": "silvercontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "state_fips",
+				"type": "UTF8"
+			},
+			{
+				"name": "state",
+				"type": "UTF8"
+			},
+			{
+				"name": "state_abbr",
+				"type": "UTF8"
+			},
+			{
+				"name": "zipcode",
+				"type": "UTF8"
+			},
+			{
+				"name": "county",
+				"type": "UTF8"
+			},
+			{
+				"name": "city",
+				"type": "UTF8"
+			}
+		]
+	}
+}
