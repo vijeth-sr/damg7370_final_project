@@ -1,0 +1,60 @@
+{
+	"name": "delimitedtimeDim",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_stg_chicago",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "time_dim.csv",
+				"container": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "time_sk",
+				"type": "String"
+			},
+			{
+				"name": "time",
+				"type": "String"
+			},
+			{
+				"name": "hour",
+				"type": "String"
+			},
+			{
+				"name": "minute",
+				"type": "String"
+			},
+			{
+				"name": "am_or_pm",
+				"type": "String"
+			},
+			{
+				"name": "time_category",
+				"type": "String"
+			},
+			{
+				"name": "DI_CreateDate",
+				"type": "String"
+			},
+			{
+				"name": "DI_Workflow_FileName",
+				"type": "String"
+			},
+			{
+				"name": "pid",
+				"type": "String"
+			}
+		]
+	}
+}
