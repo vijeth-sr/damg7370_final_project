@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_CRASH_FACT",
+						"referenceName": "SnowflakeTable_CRASH_FACT_austin",
 						"type": "DatasetReference"
 					},
 					"name": "source2"
@@ -36,7 +36,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "SnowflakeTable_CRASH_FACT",
+						"referenceName": "SnowflakeTable_CRASH_FACT_austin",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
