@@ -33,7 +33,36 @@
 					"name": "MontgomerySTG"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink4"
+				}
+			],
 			"transformations": [
 				{
 					"name": "selectTX"
@@ -58,18 +87,6 @@
 				},
 				{
 					"name": "derivedColumn4"
-				},
-				{
-					"name": "surrogateKey1"
-				},
-				{
-					"name": "surrogateKey2"
-				},
-				{
-					"name": "surrogateKey3"
-				},
-				{
-					"name": "surrogateKey4"
 				}
 			],
 			"scriptLines": [
@@ -230,34 +247,112 @@
 				"          LATITUDE = toFloat(LATITUDE),",
 				"          LONGITUDE = toFloat(LONGITUDE),",
 				"          CITY = trim(CITY),",
-				"          COUNTRY = trim(COUNTRY)) ~> derivedColumn1",
+				"          COUNTRY = trim(COUNTRY),",
+				"          di_create_date = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn1",
 				"selectIL derive(STREET_ADDRESS = trim(STREET_NAME),",
 				"          CITY = trim(CITY),",
 				"          COUNTRY = trim(COUNTRY),",
 				"          LATITUDE = toFloat(LATITUDE),",
-				"          LONGITUDE = toFloat(LONGITUDE)) ~> derivedColumn2",
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn2",
 				"selectNYC derive(STREET_ADDRESS = trim(STREET_NAME),",
 				"          LATITUDE = toFloat(LATITUDE),",
 				"          LONGITUDE = toFloat(LONGITUDE),",
 				"          CITY = trim(CITY),",
-				"          COUNTRY = trim(COUNTRY)) ~> derivedColumn3",
+				"          COUNTRY = trim(COUNTRY),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn3",
 				"selectMO derive(COUNTRY = trim(upper(COUNTRY)),",
 				"          CITY = trim(upper(CITY)),",
 				"          LATITUDE = toFloat(LATITUDE),",
 				"          STREET_ADDRESS = upper(trim(STREET_NAME)),",
-				"          LONGITUDE = toFloat(LONGITUDE)) ~> derivedColumn4",
-				"derivedColumn1 keyGenerate(output({undefined} as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"derivedColumn2 keyGenerate(output({undefined} as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey2",
-				"derivedColumn3 keyGenerate(output({undefined} as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey3",
-				"derivedColumn4 keyGenerate(output({undefined} as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey4"
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn4",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_ADDRESS,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_date,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> sink1",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_NAME,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          STREET_ADDRESS,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> sink2",
+				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 3,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          STREET_NAME,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          STREET_ADDRESS,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> sink3",
+				"derivedColumn4 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 4,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_NAME,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> sink4"
 			]
 		}
 	}
