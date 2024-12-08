@@ -156,7 +156,7 @@
 				"derivedColumn4 select(mapColumn(",
 				"          CRASH_ID,",
 				"          UNITS_INVOLVED,",
-				"          Di_workflow_name,",
+				"          DI_WORKFLOWFILENAME = Di_workflow_name,",
 				"          DI_source_name,",
 				"          DI_created_dt,",
 				"          pid",
@@ -204,7 +204,7 @@
 				"          CRASH_ID,",
 				"          UNITS_INVOLVED = units_involved,",
 				"          DI_CREATEDDATE = DI_created_dt,",
-				"          DI_WORKFLOWFILENAME = Di_workflow_name,",
+				"          DI_WORKFLOWFILENAME,",
 				"          DI_SOURCENAME = DI_source_name,",
 				"          PID = pid",
 				"     )) ~> sink1"
