@@ -35,9 +35,6 @@
 					"name": "select5"
 				},
 				{
-					"name": "select6"
-				},
-				{
 					"name": "surrogateKey1"
 				}
 			],
@@ -119,8 +116,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				" select(skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select6",
 				"select3 keyGenerate(output(ADDRESS_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
