@@ -49,6 +49,9 @@
 				},
 				{
 					"name": "select5"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -115,7 +118,7 @@
 				"     inferDriftedColumnTypes: true,",
 				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
 				"     format: 'query') ~> source1",
-				"select3, source1 union(byName: true)~> union1",
+				"derivedColumn2, source1 union(byName: true)~> union1",
 				"union1 keyGenerate(output(ADDRESS_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
@@ -135,7 +138,8 @@
 				"          longitude,",
 				"          CITY,",
 				"          COUNTRY,",
-				"          Di_workflow_name",
+				"          Di_workflow_name,",
+				"          UNITS_INVOLVED = units_involved",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
@@ -169,6 +173,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
+				"select3 derive() ~> derivedColumn2",
 				"select4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
