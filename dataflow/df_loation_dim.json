@@ -112,6 +112,7 @@
 				"surrogateKey1 derive(created_dt = currentUTC(),",
 				"          pid = \"dEbeh32ERR45TFdbss\") ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
+				"          CRASH_ID,",
 				"          STREET_ADDRESS,",
 				"          LATITUDE,",
 				"          LONGITUDE,",
