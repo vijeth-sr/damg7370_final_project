@@ -152,7 +152,6 @@
 				"          DI_source_name = \"stg_ny\") ~> derivedColumn2",
 				"select2 derive(Di_workflow_name = \"Austin_Crash_Report_Data_-_Crash_Level_Records_20241129\",",
 				"          DI_source_name = \"stg_austin\",",
-				"          UNITS_INVOLVED = split(UNITS_INVOLVED, '&'),",
 				"     partitionBy('hash', 1)) ~> derivedColumn3",
 				"derivedColumn4 select(mapColumn(",
 				"          CRASH_ID,",
