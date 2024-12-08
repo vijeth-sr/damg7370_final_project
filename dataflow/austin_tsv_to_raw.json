@@ -79,7 +79,7 @@
 				"          COUNTRY = 'UNITED STATES',",
 				"          DI_CREATE_DATE = currentDate(),",
 				"          di_workflow_name = 'Austin_Raw_Staging_Workflow',",
-				"          {crash date} = ERROR_FUNCTION('')) ~> derivedColumn1",
+				"          {crash date} = toDate({Crash timestamp (US/Central)}, 'MM/dd/yyyy', 'en-US')) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -159,10 +159,11 @@
 				"          PRIVATE_DR_FL = private_dr_fl,",
 				"          MICROMOBILITY_SERIOUS_INJURY_COUNT = micromobility_serious_injury_count,",
 				"          MICROMOBILITY_DEATH_COUNT = micromobility_death_count,",
-				"          CRASH_DATE = {Crash timestamp (US/Central)},",
+				"          CRASH_DATE = {crash date},",
 				"          CITY,",
 				"          COUNTRY,",
-				"          DI_WORKFLOW_NAME = di_workflow_name",
+				"          DI_WORKFLOW_NAME = di_workflow_name,",
+				"          CRASH_TIMESTAMP = {Crash timestamp (US/Central)}",
 				"     )) ~> sink1"
 			]
 		}
