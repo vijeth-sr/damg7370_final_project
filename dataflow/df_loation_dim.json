@@ -10,13 +10,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "sourceslocation"
-				},
-				{
-					"dataset": {
-						"referenceName": "LOCATION_DIM_SNOWFLAKE",
-						"type": "DatasetReference"
-					},
-					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -30,9 +23,6 @@
 			],
 			"transformations": [
 				{
-					"name": "addressskmax"
-				},
-				{
 					"name": "derivedColumn1"
 				},
 				{
@@ -45,10 +35,10 @@
 					"name": "select5"
 				},
 				{
-					"name": "aggregate1"
+					"name": "select6"
 				},
 				{
-					"name": "select6"
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -100,16 +90,7 @@
 				"     validateSchema: true,",
 				"     inferDriftedColumnTypes: true,",
 				"     format: 'table') ~> sourceslocation",
-				"source(output(",
-				"          ADDRESS_SK as decimal(38,0)",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: true,",
-				"     inferDriftedColumnTypes: true,",
-				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
-				"     format: 'query') ~> source1",
-				"select3, select6 union(byName: true)~> addressskmax",
-				"addressskmax derive(created_dt = currentUTC(),",
+				"surrogateKey1 derive(created_dt = currentUTC(),",
 				"          pid = \"na\",",
 				"          DI_WORKFLOW_NAME = \"stg_austin\") ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
@@ -124,8 +105,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"derivedColumn1 derive(latitude = toFloat(LATITUDE),",
-				"          longitude = toFloat(LONGITUDE),",
-				"          ADDRESS_SK = ERROR_FUNCTION('iif(isNull(ADDRESS_SK),toInteger(ADDRESS_SK),)')) ~> derivedcolumn",
+				"          longitude = toFloat(LONGITUDE)) ~> derivedcolumn",
 				"derivedcolumn select(mapColumn(",
 				"          LATITUDE = derivedcolumn@latitude,",
 				"          LONGITUDE = derivedcolumn@longitude,",
@@ -139,12 +119,14 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				"source1 aggregate(ADDRESS_SK = max(ADDRESS_SK)) ~> aggregate1",
-				"aggregate1 select(mapColumn(",
+				" select(mapColumn(",
 				"          ADDRESS_SK_max = ADDRESS_SK",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select6",
+				"select3 keyGenerate(output(ADDRESS_SK as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
 				"select5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
