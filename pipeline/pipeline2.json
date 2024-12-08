@@ -1,0 +1,47 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "austin_raw_to_stg",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "austin_raw_to_stg",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"tableName": "STG_AUSTIN_RAW"
+							},
+							"sink1": {
+								"tableName": "STG_AUSTIN_V2"
+							}
+						},
+						"linkedServiceParameters": {
+							"sink1": {
+								"schemaLinkedService": {
+									"tableName": "STG_AUSTIN_V2"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
