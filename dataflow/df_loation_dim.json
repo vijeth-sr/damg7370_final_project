@@ -30,7 +30,7 @@
 			],
 			"transformations": [
 				{
-					"name": "union1"
+					"name": "addressskmax"
 				},
 				{
 					"name": "derivedColumn1"
@@ -105,8 +105,8 @@
 				"     inferDriftedColumnTypes: true,",
 				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
 				"     format: 'query') ~> source1",
-				"select3, aggregate1 union(byName: true)~> union1",
-				"union1 derive(created_dt = currentUTC(),",
+				"select3, aggregate1 union(byName: true)~> addressskmax",
+				"addressskmax derive(created_dt = currentUTC(),",
 				"          pid = \"na\",",
 				"          DI_WORKFLOW_NAME = \"stg_austin\") ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
@@ -122,7 +122,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"derivedColumn1 derive(latitude = toFloat(LATITUDE),",
 				"          longitude = toFloat(LONGITUDE),",
-				"          ADDRESS_SK = iif(isNull(ADDRESS_SK),toInteger(ADDRESS_SK),mz)) ~> derivedcolumn",
+				"          ADDRESS_SK = ERROR_FUNCTION('iif(isNull(ADDRESS_SK),toInteger(ADDRESS_SK),)')) ~> derivedcolumn",
 				"derivedcolumn select(mapColumn(",
 				"          LATITUDE = derivedcolumn@latitude,",
 				"          LONGITUDE = derivedcolumn@longitude,",
