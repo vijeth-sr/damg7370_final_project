@@ -202,7 +202,7 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          CRASH_ID,",
-				"          UNITS_INVOLVED = units_involved,",
+				"          UNITS_INVOLVED,",
 				"          DI_CREATEDDATE = DI_created_dt,",
 				"          DI_WORKFLOWFILENAME,",
 				"          DI_SOURCENAME = DI_source_name,",
