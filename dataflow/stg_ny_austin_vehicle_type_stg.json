@@ -162,7 +162,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select5",
 				"derivedColumn3 select(mapColumn(",
 				"          CRASH_ID,",
-				"          VEHICLE_TYPE,",
+				"          UUNITS_INVOLVED = VEHICLE_TYPE,",
 				"          Di_workflow_name,",
 				"          DI_source_name,",
 				"          UNITS_INVOLVED",
