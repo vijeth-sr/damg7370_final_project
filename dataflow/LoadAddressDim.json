@@ -55,6 +55,9 @@
 				},
 				{
 					"name": "derivedColumn3"
+				},
+				{
+					"name": "derivedColumn4"
 				}
 			],
 			"scriptLines": [
@@ -281,7 +284,8 @@
 				"          LONGITUDE = trim(LONGITUDE),",
 				"          ZIP_CODE = trim(ZIP_CODE),",
 				"          CITY = trim(CITY),",
-				"          COUNTRY = trim(COUNTRY)) ~> derivedColumn3"
+				"          COUNTRY = trim(COUNTRY)) ~> derivedColumn3",
+				"selectMO derive() ~> derivedColumn4"
 			]
 		}
 	}
