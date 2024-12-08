@@ -72,9 +72,7 @@
 			},
 			{
 				"name": "UNITS_INVOLVED",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "VEHICLE_TYPE",
