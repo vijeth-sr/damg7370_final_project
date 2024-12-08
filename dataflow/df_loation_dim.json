@@ -46,6 +46,9 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "select6"
 				}
 			],
 			"scriptLines": [
@@ -105,7 +108,7 @@
 				"     inferDriftedColumnTypes: true,",
 				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
 				"     format: 'query') ~> source1",
-				"select3, aggregate1 union(byName: true)~> addressskmax",
+				"select3, select6 union(byName: true)~> addressskmax",
 				"addressskmax derive(created_dt = currentUTC(),",
 				"          pid = \"na\",",
 				"          DI_WORKFLOW_NAME = \"stg_austin\") ~> derivedColumn1",
@@ -137,6 +140,11 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
 				"source1 aggregate(ADDRESS_SK = max(ADDRESS_SK)) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          ADDRESS_SK_max = ADDRESS_SK",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
 				"select5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
