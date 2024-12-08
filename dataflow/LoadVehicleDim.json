@@ -1,0 +1,100 @@
+{
+	"name": "LoadVehicleDim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "nyc"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "austin"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          COLLISION_ID as string,",
+				"          CRASH_DATE as date,",
+				"          CRASH_TIME as string,",
+				"          CRASH_DATETIME as timestamp,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          STREET_NAME as string,",
+				"          ZIP_CODE as string,",
+				"          NUMBER_OF_PEDESTRIANS_KILLED as decimal(38,0),",
+				"          NUMBER_OF_PEDESTRIANS_INJURED as decimal(38,0),",
+				"          NUMBER_OF_PERSONS_INJURED as decimal(38,0),",
+				"          NUMBER_OF_CYCLIST_INJURED as decimal(38,0),",
+				"          NUMBER_OF_MOTORIST_INJURED as decimal(38,0),",
+				"          NUMBER_OF_MOTORIST_KILLED as decimal(38,0),",
+				"          NUMBER_OF_PERSONS_KILLED as decimal(38,0),",
+				"          NUMBER_OF_CYCLIST_KILLED as decimal(38,0),",
+				"          PEDESTRIAN_FLAG as decimal(38,0),",
+				"          TOT_INJRY_CNT as decimal(38,0),",
+				"          MOTORIST_INJRY_OR_KILLED_CNT as decimal(38,0),",
+				"          TOT_FATAL_CNT as decimal(38,0),",
+				"          CONTRIBUTING_FACTOR_VEHICLE as string,",
+				"          VEHICLE_TYPE_CODE as string,",
+				"          CITY as string,",
+				"          COUNTRY as string,",
+				"          DI_WORKFLOW_FILENAME as string,",
+				"          DI_CREATEDDATE as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> nyc",
+				"source(output(",
+				"          ADDRESS_SK as string,",
+				"          STREET_NAME as string,",
+				"          CITY as string,",
+				"          COUNTRY as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          DI_WORKFLOW_NAME as string,",
+				"          DI_CREATED_DT as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> austin",
+				"nyc select(mapColumn(",
+				"          {} = ADDRESS_SK",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"austin select(mapColumn(",
+				"          ADDRESS_SK,",
+				"          STREET_NAME,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          DI_WORKFLOW_NAME,",
+				"          DI_CREATED_DT",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select1, select2 union(byName: true)~> union1"
+			]
+		}
+	}
+}
