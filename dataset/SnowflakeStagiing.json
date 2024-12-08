@@ -13,42 +13,7 @@
 		},
 		"annotations": [],
 		"type": "SnowflakeV2Table",
-		"schema": [
-			{
-				"name": "ADDRESS_SK",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "STREET_NAME",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "CITY",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "COUNTRY",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "LATITUDE",
-				"type": "FLOAT"
-			},
-			{
-				"name": "LONGITUDE",
-				"type": "FLOAT"
-			},
-			{
-				"name": "DI_WORKFLOW_NAME",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "DI_CREATED_DT",
-				"type": "DATE"
-			}
-		],
+		"schema": [],
 		"typeProperties": {
 			"schema": "STAGING",
 			"table": {
