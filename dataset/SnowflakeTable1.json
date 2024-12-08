@@ -46,15 +46,11 @@
 			},
 			{
 				"name": "TOT_INJRY_CNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "DEATH_CNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "UNITS_INVOLVED",
@@ -66,63 +62,43 @@
 			},
 			{
 				"name": "MOTOR_VEHICLE_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "MOTOR_VEHICLE_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "BICYCLE_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "BICYCLE_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "PEDESTRIAN_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "PEDESTRIAN_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "MOTORCYCLE_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "MOTORCYCLE_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "OTHER_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "OTHER_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "ONSYS_FL",
@@ -134,23 +110,19 @@
 			},
 			{
 				"name": "MICROMOBILITY_SERIOUS_INJURY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "MICROMOBILITY_DEATH_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "CRASH_DATE",
-				"type": "DATE"
+				"type": "VARCHAR"
 			},
 			{
 				"name": "CRASH_TIMESTAMP",
-				"type": "TIMESTAMP_NTZ"
+				"type": "VARCHAR"
 			},
 			{
 				"name": "IS_DELETED",
@@ -162,9 +134,7 @@
 			},
 			{
 				"name": "LAW_ENFORCEMENT_FATALITY_COUNT",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
+				"type": "VARCHAR"
 			},
 			{
 				"name": "REPORTED_STREET_PREFIX",
@@ -184,7 +154,7 @@
 			},
 			{
 				"name": "CREATED_DT",
-				"type": "TIMESTAMP_NTZ"
+				"type": "VARCHAR"
 			},
 			{
 				"name": "PID",
@@ -193,7 +163,7 @@
 		],
 		"typeProperties": {
 			"schema": "STAGING",
-			"table": "STG_AUSTIN_V2"
+			"table": "STG_AUSTIN_RAW"
 		}
 	}
 }
