@@ -1,5 +1,5 @@
 {
-	"name": "SnowflakeTable_CRASH_FACT",
+	"name": "SnowflakeTable_CRASH_FACT_austin",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Snowflake_AUSTINV2_stg",
