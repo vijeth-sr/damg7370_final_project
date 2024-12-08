@@ -49,12 +49,6 @@
 				},
 				{
 					"name": "select5"
-				},
-				{
-					"name": "derivedColumn2"
-				},
-				{
-					"name": "flatten1"
 				}
 			],
 			"scriptLines": [
@@ -114,7 +108,7 @@
 				"     inferDriftedColumnTypes: true,",
 				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
 				"     format: 'query') ~> source1",
-				"flatten1, source1 union(byName: true)~> union1",
+				"select3, source1 union(byName: true)~> union1",
 				"union1 keyGenerate(output(ADDRESS_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
@@ -126,8 +120,12 @@
 				"        concat(trim(rpt_block_num), ' ', upper(trim(rpt_street_name) ))\r",
 				")) ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
-				"          CRASH_ID,",
-				"          UNITS_INVOLVED",
+				"          STREET_ADDRESS,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_WORKFLOW_NAME",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
@@ -149,8 +147,8 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select4",
 				"derivedcolumn select(mapColumn(",
-				"          latitude,",
-				"          longitude,",
+				"          latitude = derivedcolumn@latitude,",
+				"          longitude = derivedcolumn@longitude,",
 				"          CITY,",
 				"          COUNTRY,",
 				"          Di_workflow_name = CRASH_ID,",
@@ -161,16 +159,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				"select3 derive(UNITS_INVOLVED = \r",
-				"\r",
-				"split(UNITS_INVOLVED, '&')) ~> derivedColumn2",
-				"derivedColumn2 foldDown(unroll(UNITS_INVOLVED),",
-				"     mapColumn(",
-				"          CRASH_ID,",
-				"          UNITS_INVOLVED",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> flatten1",
 				"select4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
