@@ -33,9 +33,6 @@
 					"name": "union1"
 				},
 				{
-					"name": "surrogateKey1"
-				},
-				{
 					"name": "derivedColumn1"
 				},
 				{
@@ -106,11 +103,8 @@
 				"     query: 'select NVL(MAX(address_sk),0) as address_sk  from DIM_address',",
 				"     format: 'query') ~> source1",
 				"select3, source1 union(byName: true)~> union1",
-				"union1 keyGenerate(output(ADDRESS_SK as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive(created_dt = currentUTC(),",
-				"          pid = \"dEbeh32ERR45TFdbss\") ~> derivedColumn1",
+				"union1 derive(created_dt = currentUTC(),",
+				"          pid = \"na\") ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
 				"          CRASH_ID,",
 				"          STREET_ADDRESS,",
