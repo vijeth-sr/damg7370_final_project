@@ -37,7 +37,10 @@
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          {UPPER(VEHICLE_TYPE_CODE)} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     query: 'SELECT DISTINCT UPPER(VEHICLE_TYPE_CODE) FROM STG_NYC_V2',",
 				"     format: 'query') ~> nyc",
