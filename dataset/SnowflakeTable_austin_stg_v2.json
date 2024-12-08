@@ -13,199 +13,177 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "crash_fatal_fl",
+				"name": "CRASH_FATAL_FL",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "case_id",
+				"name": "CASE_ID",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "street_name",
+				"name": "STREET_ADDRESS",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "rpt_block_num",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "rpt_street_name",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "rpt_street_sfx",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "crash_speed_limit",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "road_constr_zone_fl",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "latitude",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "longitude",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "crash_sev_id",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "sus_serious_injry_cnt",
+				"name": "CRASH_SPEED_LIMIT",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "nonincap_injry_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "poss_injry_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "non_injry_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "unkn_injry_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "tot_injry_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "death_cnt",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "units_involved",
+				"name": "ROAD_CONSTR_ZONE_FL",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "point",
+				"name": "LATITUDE",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 7
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "NUMBER",
+				"precision": 10,
+				"scale": 7
+			},
+			{
+				"name": "CRASH_SEV_ID",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "TOT_INJRY_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DEATH_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "UNITS_INVOLVED",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "motor_vehicle_death_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "motor_vehicle_serious_injury_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "bicycle_death_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "bicycle_serious_injury_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "pedestrian_death_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "pedestrian_serious_injury_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "motorcycle_death_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "motorcycle_serious_injury_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "other_death_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "other_serious_injury_count",
-				"type": "NUMBER",
-				"precision": 38,
-				"scale": 0
-			},
-			{
-				"name": "onsys_fl",
+				"name": "VEHICLE_TYPE",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "private_dr_fl",
+				"name": "POINT",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "micromobility_serious_injury_count",
+				"name": "MOTOR_VEHICLE_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTOR_VEHICLE_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "BICYCLE_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "BICYCLE_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDESTRIAN_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDESTRIAN_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTORCYCLE_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MOTORCYCLE_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "OTHER_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "OTHER_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "ONSYS_FL",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "micromobility_death_count",
+				"name": "PRIVATE_DR_FL",
 				"type": "VARCHAR"
+			},
+			{
+				"name": "MICROMOBILITY_SERIOUS_INJURY_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "MICROMOBILITY_DEATH_COUNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
 			},
 			{
 				"name": "CRASH_DATE",
-				"type": "DATE"
+				"type": "VARCHAR"
 			},
 			{
-				"name": "Crash_timestamp",
+				"name": "CRASH_TIME",
+				"type": "TIME"
+			},
+			{
+				"name": "CRASH_TIMESTAMP",
 				"type": "TIMESTAMP_NTZ"
 			},
 			{
-				"name": "Is_deleted",
+				"name": "IS_DELETED",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "Is_temporary_record",
+				"name": "IS_TEMPORARY_RECORD",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "Law_enforcement_fatality_count",
+				"name": "LAW_ENFORCEMENT_FATALITY_COUNT",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "Reported_street_prefix",
+				"name": "REPORTED_STREET_PREFIX",
 				"type": "VARCHAR"
 			},
 			{
@@ -217,16 +195,12 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "Di_workflow_name",
+				"name": "DI_WORKFLOW_NAME",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "created_dt",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "pid",
-				"type": "VARCHAR"
+				"name": "CREATED_DT",
+				"type": "DATE"
 			}
 		],
 		"typeProperties": {
