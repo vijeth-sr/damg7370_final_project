@@ -88,7 +88,7 @@
 				"     inferDriftedColumnTypes: true,",
 				"     format: 'table') ~> sourceslocation",
 				"surrogateKey1 derive(created_dt = currentUTC(),",
-				"          pid = \"na\",",
+				"          pid = \"ccvfdcc\",",
 				"          DI_WORKFLOW_NAME = \"stg_austin\") ~> derivedColumn1",
 				"sourceslocation select(mapColumn(",
 				"          CRASH_ID,",
