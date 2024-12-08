@@ -150,7 +150,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select3 derive(Di_workflow_name = \"Motor_Vehicle_Collisions_-_Crashes_20241129\",",
 				"          DI_source_name = \"stg_ny\") ~> derivedColumn2",
-				"select2 derive(Di_workflow_name = \"Austin_Crash_Report_Data_-_Crash_Level_Records_20241129\",",
+				"select2 derive(Di_workflow_name = \"Austin_stg_v2\",",
 				"          DI_source_name = \"stg_austin\",",
 				"     partitionBy('hash', 1)) ~> derivedColumn3",
 				"derivedColumn4 select(mapColumn(",
