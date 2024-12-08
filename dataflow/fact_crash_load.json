@@ -31,6 +31,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "source4"
+				},
+				{
+					"name": "source5"
 				}
 			],
 			"sinks": [
@@ -155,6 +158,8 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> source4",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source5",
 				"source1 select(skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 derive(DI_Created_dt = currentTimestamp(),",
