@@ -40,6 +40,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -57,7 +60,7 @@
 				"     validateSchema: false,",
 				"     query: 'SELECT DISTINCT VEHICLE_TYPE  FROM STG_AUSTIN_V2',",
 				"     format: 'query') ~> austin",
-				"filter1, austin union(byName: true)~> union1",
+				"derivedColumn2, austin union(byName: true)~> union1",
 				"union1 keyGenerate(output(VEHICLE_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
@@ -66,8 +69,8 @@
 				"length(trim(VEHICLE_TYPE)) <= 50 &&\r",
 				"regexMatch(VEHICLE_TYPE, '[a-zA-Z]')) ~> filter1",
 				"surrogateKey1 derive(DI_CREATED_DT = currentDate(),",
-				"          DI_WORKFLOW_NAME = 'DIM_Vehicle_Type',",
-				"          VEHICLE_TYPE = trim(regexReplace(VEHICLE_TYPE, '[^a-zA-Z0-9 ]', ''))) ~> derivedColumn1",
+				"          DI_WORKFLOW_NAME = 'DIM_Vehicle_Type') ~> derivedColumn1",
+				"filter1 derive(VEHICLE_TYPE = trim(regexReplace(VEHICLE_TYPE, '[^a-zA-Z0-9 ]', ''))) ~> derivedColumn2",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
