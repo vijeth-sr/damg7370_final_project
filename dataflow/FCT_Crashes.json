@@ -1,0 +1,29 @@
+{
+	"name": "FCT_Crashes",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "NYCSTG"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> NYCSTG",
+				"NYCSTG filter(ERROR_FUNCTION('')) ~> filter1"
+			]
+		}
+	}
+}
