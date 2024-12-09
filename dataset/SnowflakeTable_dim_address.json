@@ -9,11 +9,13 @@
 		"type": "SnowflakeV2Table",
 		"schema": [
 			{
-				"name": "latitude",
-				"type": "VARCHAR"
+				"name": "ADDRESS_SK",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
 			},
 			{
-				"name": "longitude",
+				"name": "STREET_NAME",
 				"type": "VARCHAR"
 			},
 			{
@@ -25,24 +27,24 @@
 				"type": "VARCHAR"
 			},
 			{
-				"name": "Di_workflow_name",
+				"name": "LATITUDE",
+				"type": "FLOAT",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "LONGITUDE",
+				"type": "FLOAT",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "DI_WORKFLOW_NAME",
 				"type": "VARCHAR"
 			},
 			{
-				"name": "ADDRESS_SK",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "created_dt",
-				"type": "TIMESTAMP_NTZ"
-			},
-			{
-				"name": "pid",
-				"type": "VARCHAR"
-			},
-			{
-				"name": "street name",
-				"type": "VARCHAR"
+				"name": "DI_CREATED_DT",
+				"type": "DATE"
 			}
 		],
 		"typeProperties": {
