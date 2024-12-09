@@ -130,7 +130,7 @@
 				"flatten1 derive(DI_WORKFLOW_NAME = 'Austin_Integration_Workflow',",
 				"          CREATED_DT = currentDate(),",
 				"          id = concat(\"AST\",toString(CRASH_ID)),",
-				"          vehicle_types = upper(trim(regexReplace(vehicle_types, '[^a-zA-Z0-9 ]', ''))),",
+				"          vehicle_types = upper(trim(vehicle_types)),",
 				"          LATITUDE = toFloat(iif(LATITUDE == '0', '999', LATITUDE)),",
 				"          LONGITUDE = toFloat(iif(LONGITUDE == '0', '999', LONGITUDE))) ~> derivedColumn2",
 				"derivedColumn2 sink(allowSchemaDrift: true,",
