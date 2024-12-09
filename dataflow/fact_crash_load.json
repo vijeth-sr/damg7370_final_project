@@ -193,7 +193,7 @@
 				"          total_fatal_cnt = toInteger(DEATH_CNT) +toInteger(OTHER_DEATH_COUNT)+toInteger(MICROMOBILITY_DEATH_COUNT),",
 				"          Motor_fatal_cnt = toInteger(MOTOR_VEHICLE_DEATH_COUNT) + toInteger(BICYCLE_DEATH_COUNT) + toInteger(MOTORCYCLE_DEATH_COUNT),",
 				"          pid = \"pipiddp\",",
-				"          Motor_injr_cnt = toInteger(MOTOR_VEHICLE_SERIOUS_INJURY_COUNT) + toInteger(BICYCLE_SERIOUS_INJURY_COUNT)  + toInteger(MOTORCYCLE_SERIOUS_INJURY_COUNT),",
+				"          Motor_injr_cnt = toInteger(MOTOR_VEHICLE_SERIOUS_INJURY_COUNT)  + toInteger(MOTORCYCLE_SERIOUS_INJURY_COUNT),",
 				"          pedstrian_fatal_cnt = toInteger(PEDESTRIAN_DEATH_COUNT)) ~> derivedColumn1",
 				"select4, addresssk lookup(STREET_ADDRESS == STREET_NAME_sk,",
 				"     multiple: false,",
