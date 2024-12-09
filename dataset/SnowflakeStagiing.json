@@ -7,8 +7,7 @@
 		},
 		"parameters": {
 			"tableName": {
-				"type": "string",
-				"defaultValue": "DIM_ADDRESS"
+				"type": "string"
 			}
 		},
 		"annotations": [],
