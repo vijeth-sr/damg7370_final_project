@@ -30,7 +30,7 @@
 						"referenceName": "SnowflakeTable_dimDate",
 						"type": "DatasetReference"
 					},
-					"name": "source4"
+					"name": "datedim"
 				},
 				{
 					"name": "source5"
@@ -53,12 +53,6 @@
 					"name": "derivedColumn1"
 				},
 				{
-					"name": "select2"
-				},
-				{
-					"name": "union1"
-				},
-				{
 					"name": "surrogateKey1"
 				},
 				{
@@ -69,6 +63,9 @@
 				},
 				{
 					"name": "lookup2"
+				},
+				{
+					"name": "datesklk"
 				}
 			],
 			"scriptLines": [
@@ -157,10 +154,33 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     format: 'table') ~> source4",
+				"     format: 'table') ~> datedim",
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false) ~> source5",
-				"source1 select(skipDuplicateMapInputs: true,",
+				"source1 select(mapColumn(",
+				"          CRASH_ID,",
+				"          STREET_ADDRESS,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          MOTOR_VEHICLE_DEATH_COUNT,",
+				"          MOTOR_VEHICLE_SERIOUS_INJURY_COUNT,",
+				"          BICYCLE_DEATH_COUNT,",
+				"          BICYCLE_SERIOUS_INJURY_COUNT,",
+				"          PEDESTRIAN_DEATH_COUNT,",
+				"          PEDESTRIAN_SERIOUS_INJURY_COUNT,",
+				"          MOTORCYCLE_DEATH_COUNT,",
+				"          MOTORCYCLE_SERIOUS_INJURY_COUNT,",
+				"          OTHER_DEATH_COUNT,",
+				"          OTHER_SERIOUS_INJURY_COUNT,",
+				"          MICROMOBILITY_SERIOUS_INJURY_COUNT,",
+				"          MICROMOBILITY_DEATH_COUNT,",
+				"          CRASH_DATE,",
+				"          CRASH_TIME,",
+				"          TOT_INJRY_CNT,",
+				"          DEATH_CNT,",
+				"          CRASH_TIMESTAMP",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"select1 derive(DI_Created_dt = currentTimestamp(),",
 				"          total_injury_cnt = toInteger(TOT_INJRY_CNT) + toInteger(OTHER_SERIOUS_INJURY_COUNT) + toInteger(MICROMOBILITY_SERIOUS_INJURY_COUNT),",
@@ -168,27 +188,8 @@
 				"          Motor_fatal_cnt = toInteger(MOTOR_VEHICLE_DEATH_COUNT) + toInteger(BICYCLE_DEATH_COUNT) + toInteger(MOTORCYCLE_DEATH_COUNT),",
 				"          pid = \"pipiddp\",",
 				"          Motor_injr_cnt = toInteger(MOTOR_VEHICLE_SERIOUS_INJURY_COUNT) + toInteger(BICYCLE_SERIOUS_INJURY_COUNT)  + toInteger(MOTORCYCLE_SERIOUS_INJURY_COUNT),",
-				"          pedstrian_fatal_cnt = toInteger(PEDESTRIAN_DEATH_COUNT),",
-				"          pedstian_injr_cnt = toInteger(PEDESTRIAN_SERIOUS_INJURY_COUNT)) ~> derivedColumn1",
-				"derivedColumn1 select(mapColumn(",
-				"          CRASH_ID,",
-				"          total_injury_cnt,",
-				"          total_fatal_cnt,",
-				"          Motor_injr_cnt,",
-				"          Motor_fatal_cnt,",
-				"          pedstian_injr_cnt,",
-				"          pedstrian_fatal_cnt,",
-				"          CRASH_DATE,",
-				"          DI_Created_dt,",
-				"          pid,",
-				"          LATITUDE,",
-				"          LONGITUDE,",
-				"          STREET_ADDRESS",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select2, source2 union(byName: true)~> union1",
-				"union1 keyGenerate(output(CRASH_SK as long),",
+				"          pedstrian_fatal_cnt = toInteger(PEDESTRIAN_DEATH_COUNT)) ~> derivedColumn1",
+				"derivedColumn1 keyGenerate(output(CRASH_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
 				"lookup2, source3 lookup(union1@LATITUDE == source3@latitude",
@@ -213,17 +214,28 @@
 				"          CRASH_DATE,",
 				"          DI_Created_dt,",
 				"          pid = union1@pid,",
-				"          Di_workflow_name = source3@Di_workflow_name,",
+				"          Di_workflow_name,",
 				"          ADDRESS_SK,",
 				"          created_dt,",
 				"          DATE_SK",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"surrogateKey1, source4 lookup(CRASH_DATE == DATE,",
+				"surrogateKey1, datesklk lookup(year(toDate(CRASH_DATE))\r",
+				" == toInteger(YEAR),",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup2",
+				"datedim select(mapColumn(",
+				"          DATE_SK,",
+				"          DATE,",
+				"          DAY_OF_MONTH,",
+				"          MONTH,",
+				"          MONTH_OF_YEAR,",
+				"          YEAR",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> datesklk",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: true,",
 				"     input(",
@@ -258,9 +270,10 @@
 				"          PEDSTRIAN_FATAL_CNT = pedstrian_fatal_cnt,",
 				"          MOTOR_FATAL_CNT = Motor_fatal_cnt,",
 				"          DI_CREATED_DT = created_dt,",
-				"          PID = pid,",
+				"          PID = CRASH_SK,",
 				"          DATE_SK,",
-				"          ADDRESS_SK",
+				"          ADDRESS_SK,",
+				"          SOURCE_ID_SK = total_fatal_cnt",
 				"     )) ~> sink1"
 			]
 		}
