@@ -74,7 +74,7 @@
 					"name": "derivedColumn3"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "surrogateKey2"
 				}
 			],
 			"scriptLines": [
@@ -275,11 +275,12 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> addresssk",
 				"lookup2 derive(DATE_SK = iif(isNull(DATE_SK), -1, toInteger(DATE_SK))) ~> derivedColumn2",
-				"select3 derive(SOURCE_ID_SK = -1) ~> derivedColumn3",
-				"derivedColumn3 keyGenerate(output(CRASH_SK as long),",
+				"surrogateKey2 derive(SOURCE_ID_SK = -1,",
+				"          CRASH_SK = iif(isNull(CRASH_SK),-1, toInteger( CRASH_SK))) ~> derivedColumn3",
+				"select3 keyGenerate(output(CRASH_SK as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     stepValue: 1L) ~> surrogateKey2",
+				"derivedColumn3 sink(allowSchemaDrift: true,",
 				"     validateSchema: true,",
 				"     input(",
 				"          CRASH_SK as string,",
@@ -305,9 +306,18 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     stageInsert: true,",
 				"     mapColumn(",
-				"          CRASH_SK,",
+				"          CRASH_SK = DATE_SK,",
 				"          CRASH_ID,",
-				"          PID = pid",
+				"          TOTAL_INJURY_CNT = total_injury_cnt,",
+				"          TOTAL_FATAL_CNT = total_fatal_cnt,",
+				"          MOTOR_INJR_OR_KILLED_CNT = Motor_injr_cnt,",
+				"          PEDSTRIAN_FATAL_CNT = pedstrian_fatal_cnt,",
+				"          MOTOR_FATAL_CNT = Motor_fatal_cnt,",
+				"          DI_CREATED_DT = DI_Created_dt,",
+				"          PID = pid,",
+				"          DATE_SK,",
+				"          ADDRESS_SK,",
+				"          SOURCE_ID_SK",
 				"     )) ~> sink1"
 			]
 		}
