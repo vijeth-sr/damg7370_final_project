@@ -31,13 +31,19 @@
 				"scale": 0
 			},
 			{
-				"name": "MOTOR_INJR_OR_KILLED_CNT",
+				"name": "MOTOR_INJR_CNT",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
 			},
 			{
 				"name": "PEDSTRIAN_FATAL_CNT",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "PEDSTIAN_INJR_CNT",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
