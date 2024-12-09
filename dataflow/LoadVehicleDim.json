@@ -67,7 +67,7 @@
 				"regexMatch(VEHICLE_TYPE, '[a-zA-Z]')) ~> filter1",
 				"surrogateKey1 derive(DI_CREATED_DT = currentDate(),",
 				"          DI_WORKFLOW_NAME = 'DIM_Vehicle_Type',",
-				"          VEHICLE_TYPE = regexReplace(VEHICLE_TYPE, '[^a-zA-Z0-9 ]', '')) ~> derivedColumn1",
+				"          VEHICLE_TYPE = trim(regexReplace(VEHICLE_TYPE, '[^a-zA-Z0-9 ]', ''))) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
