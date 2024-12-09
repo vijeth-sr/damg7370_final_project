@@ -12,15 +12,7 @@
 					"name": "sourcesnowflakechicagostage"
 				}
 			],
-			"sinks": [
-				{
-					"dataset": {
-						"referenceName": "stage_chicago_v2",
-						"type": "DatasetReference"
-					},
-					"name": "sinkStageChicago"
-				}
-			],
+			"sinks": [],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -102,19 +94,7 @@
 				"     format: 'table') ~> sourcesnowflakechicagostage",
 				"sourcesnowflakechicagostage derive(CRASH_DATE = toDate(CRASH_DATE),",
 				"          CRASH_TIME = substring(toString(CRASH_DATE), 11, 9),",
-				"          STREET_NAME = iif(",
-				"    STREET_NO == 0 && !isNull(STREET_NAME) && STREET_NAME != '%UNKNOWN%', upper(trim(STREET_NAME)),",
-				"    iif(",
-				"        STREET_NO == 0, 'UNKNOWN',",
-				"        iif(",
-				"            isNull((STREET_NAME)), 'UNKNOWN',",
-				"            iif(",
-				"                isNull(STREET_NO) && !isNull(STREET_NAME), upper(trim(STREET_NAME)),",
-				"                toString(STREET_NO) + ' ' + upper(trim(STREET_NAME))",
-				"            )",
-				"        )",
-				"    )",
-				"),",
+				"          STREET_NAME = upper(trim(STREET_NAME)),",
 				"          INJURIES_TOTAL = coalesce(INJURIES_TOTAL, 0),",
 				"          INJURIES_FATAL = coalesce(INJURIES_FATAL, 0),",
 				"          LATITUDE = iif(isNull(LATITUDE), toDouble(0), LATITUDE),",
@@ -122,40 +102,7 @@
 				"derivedColumn1 derive(CONTRIBUTORY_FACTOR = upper(trim(PRIM_CONTRIBUTORY_CAUSE))) ~> derivedColumn2",
 				"derivedColumn2 derive(CONTRIBUTORY_FACTOR = upper(trim(SEC_CONTRIBUTORY_CAUSE))) ~> derivedColumn3",
 				"derivedColumn3, derivedColumn2 union(byName: true)~> union1",
-				"union1 filter(!isNull(CONTRIBUTORY_FACTOR)) ~> filter1",
-				"filter1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          CRASH_RECORD_ID as string,",
-				"          CRASH_DATE as string,",
-				"          CRASH_TIME as string,",
-				"          PRIM_CONTRIBUTORY_CAUSE as string,",
-				"          SEC_CONTRIBUTORY_CAUSE as string,",
-				"          STREET_NAME as string,",
-				"          INJURIES_TOTAL as string,",
-				"          INJURIES_FATAL as string,",
-				"          LATITUDE as string,",
-				"          LONGITUDE as string,",
-				"          CONTRIBUTING_FACTOR_MERGED as string,",
-				"          CITY as string,",
-				"          COUNTRY as string,",
-				"          DI_SOURCE_NAME as string,",
-				"          DI_CREATED_DATE as string,",
-				"          DI_WORKFLOW_NAME as string",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     truncate:true,",
-				"     format: 'table',",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true,",
-				"     mapColumn(",
-				"          each(match(/* All input columns */ true()),",
-				"               /* Input name */ $$ = $$)",
-				"     )) ~> sinkStageChicago"
+				"union1 filter(!isNull(CONTRIBUTORY_FACTOR)) ~> filter1"
 			]
 		}
 	}
