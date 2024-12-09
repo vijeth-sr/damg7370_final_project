@@ -39,28 +39,28 @@
 						"referenceName": "SnowflakeStagiing",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "AustinDIM"
 				},
 				{
 					"dataset": {
 						"referenceName": "SnowflakeStagiing",
 						"type": "DatasetReference"
 					},
-					"name": "sink2"
+					"name": "ChicagoDIM"
 				},
 				{
 					"dataset": {
 						"referenceName": "SnowflakeStagiing",
 						"type": "DatasetReference"
 					},
-					"name": "sink3"
+					"name": "NYCDIM"
 				},
 				{
 					"dataset": {
 						"referenceName": "SnowflakeStagiing",
 						"type": "DatasetReference"
 					},
-					"name": "sink4"
+					"name": "MONTDIM"
 				}
 			],
 			"transformations": [
@@ -87,6 +87,18 @@
 				},
 				{
 					"name": "derivedColumn4"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "filter3"
+				},
+				{
+					"name": "filter4"
 				}
 			],
 			"scriptLines": [
@@ -271,7 +283,11 @@
 				"          LONGITUDE = toFloat(LONGITUDE),",
 				"          di_create_dt = currentDate(),",
 				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn4",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"derivedColumn2 filter(!isNull(STREET_NAME)) ~> filter1",
+				"derivedColumn1 filter(!isNull(STREET_ADDRESS)) ~> filter2",
+				"derivedColumn3 filter(!isNull(STREET_NAME)) ~> filter3",
+				"derivedColumn4 filter(!isNull(STREET_NAME)) ~> filter4",
+				"filter2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -290,8 +306,8 @@
 				"          COUNTRY,",
 				"          DI_CREATED_DT = di_create_date,",
 				"          DI_WORKFLOW_NAME = di_workflow",
-				"     )) ~> sink1",
-				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     )) ~> AustinDIM",
+				"filter1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -310,8 +326,8 @@
 				"          COUNTRY,",
 				"          DI_CREATED_DT = di_create_dt,",
 				"          DI_WORKFLOW_NAME = di_workflow",
-				"     )) ~> sink2",
-				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"     )) ~> ChicagoDIM",
+				"filter3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -330,8 +346,8 @@
 				"          COUNTRY,",
 				"          DI_CREATED_DT = di_create_dt,",
 				"          DI_WORKFLOW_NAME = di_workflow",
-				"     )) ~> sink3",
-				"derivedColumn4 sink(allowSchemaDrift: true,",
+				"     )) ~> NYCDIM",
+				"filter4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -350,7 +366,7 @@
 				"          COUNTRY,",
 				"          DI_CREATED_DT = di_create_dt,",
 				"          DI_WORKFLOW_NAME = di_workflow",
-				"     )) ~> sink4"
+				"     )) ~> MONTDIM"
 			]
 		}
 	}
