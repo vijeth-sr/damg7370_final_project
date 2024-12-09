@@ -98,7 +98,7 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     query: 'Select distinct STREET_NAME, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_chicago_v2 ',",
+				"     query: 'Select distinct STREET_NAME, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_chicago_v2 where STREET_NAME is not null',",
 				"     format: 'query') ~> ChicagoSTG",
 				"source(output(",
 				"          STREET_NAME as string,",
