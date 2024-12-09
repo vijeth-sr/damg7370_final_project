@@ -123,7 +123,7 @@
 				"        'UNKNOWN'\r",
 				"    )\r",
 				"),",
-				"          Di_workflow_name = \"Austin_Crash_Report_Data_-_Crash_Level_Records_20241129.tsv\",",
+				"          Di_workflow_name = \"STG_AUSTIN\",",
 				"          ID = 'AST'+ID,",
 				"          CITY = 'AUSTIN',",
 				"          COUNTRY = 'UNITED STATES') ~> derivedColumn1",
