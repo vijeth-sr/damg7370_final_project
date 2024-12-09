@@ -12,7 +12,15 @@
 					"name": "sourcesnowflakechicagostage"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "stg_chicago_v2",
+						"type": "DatasetReference"
+					},
+					"name": "sinkChicagoV2"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1"
@@ -102,7 +110,53 @@
 				"derivedColumn1 derive(CONTRIBUTORY_FACTOR = upper(trim(PRIM_CONTRIBUTORY_CAUSE))) ~> derivedColumn2",
 				"derivedColumn2 derive(CONTRIBUTORY_FACTOR = upper(trim(SEC_CONTRIBUTORY_CAUSE))) ~> derivedColumn3",
 				"derivedColumn3, derivedColumn2 union(byName: true)~> union1",
-				"union1 filter(!isNull(CONTRIBUTORY_FACTOR)) ~> filter1"
+				"union1 filter(!isNull(CONTRIBUTORY_FACTOR)) ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CRASH_RECORD_ID as string,",
+				"          CRASH_DATE as string,",
+				"          CRASH_TIME as string,",
+				"          PRIM_CONTRIBUTORY_CAUSE as string,",
+				"          SEC_CONTRIBUTORY_CAUSE as string,",
+				"          STREET_NAME as string,",
+				"          INJURIES_TOTAL as string,",
+				"          INJURIES_FATAL as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          CONTRIBUTORY_FACTOR as string,",
+				"          CITY as string,",
+				"          COUNTRY as string,",
+				"          DI_SOURCE_NAME as string,",
+				"          DI_CREATED_DATE as string,",
+				"          DI_WORKFLOW_NAME as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CRASH_RECORD_ID,",
+				"          CRASH_DATE,",
+				"          CRASH_TIME,",
+				"          PRIM_CONTRIBUTORY_CAUSE,",
+				"          SEC_CONTRIBUTORY_CAUSE,",
+				"          STREET_NAME,",
+				"          INJURIES_TOTAL,",
+				"          INJURIES_FATAL,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CONTRIBUTORY_FACTOR,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_SOURCE_NAME,",
+				"          DI_CREATED_DATE,",
+				"          DI_WORKFLOW_NAME",
+				"     )) ~> sinkChicagoV2"
 			]
 		}
 	}
