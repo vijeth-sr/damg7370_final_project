@@ -68,16 +68,33 @@
 					"name": "DIMContrib"
 				}
 			],
-			"sinks": [],
-			"transformations": [
+			"sinks": [
 				{
-					"name": "filter1"
-				},
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "FCTCrashes"
+				}
+			],
+			"transformations": [
 				{
 					"name": "selectNYC"
 				},
 				{
 					"name": "join1"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "join3"
+				},
+				{
+					"name": "join4"
+				},
+				{
+					"name": "join5"
 				}
 			],
 			"scriptLines": [
@@ -86,8 +103,8 @@
 				"          CRASH_DATE as date,",
 				"          CRASH_TIME as string,",
 				"          CRASH_DATETIME as timestamp,",
-				"          LATITUDE as string,",
-				"          LONGITUDE as string,",
+				"          LATITUDE as double,",
+				"          LONGITUDE as double,",
 				"          STREET_NAME as string,",
 				"          ZIP_CODE as string,",
 				"          NUMBER_OF_PEDESTRIANS_KILLED as decimal(38,0),",
@@ -248,14 +265,22 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> DIMVehicleType",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          DIM_CONTRIB_SK as decimal(38,0),",
+				"          CONTRIBUTION as string,",
+				"          CODE as decimal(38,0),",
+				"          AUSTIN as string,",
+				"          CHICAGO as string,",
+				"          NEWYORK as string,",
+				"          MONTGOMERY as string,",
+				"          IS_ACTIVE as decimal(38,0),",
+				"          SCD_VERSION as decimal(38,0),",
+				"          LOADED_TIMESTAMP as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> DIMContrib",
-				"NYCSTG filter(!regexMatch(VEHICLE_TYPE_CODE, '^[0-9]+$')&&",
-				"length(trim(VEHICLE_TYPE_CODE)) > 1 && ",
-				"length(trim(VEHICLE_TYPE_CODE)) <= 50 &&",
-				"regexMatch(VEHICLE_TYPE_CODE, '[a-zA-Z]')) ~> filter1",
-				"filter1 select(mapColumn(",
+				"NYCSTG select(mapColumn(",
 				"          COLLISION_ID,",
 				"          CRASH_DATE,",
 				"          CRASH_TIME,",
@@ -283,13 +308,43 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectNYC",
-				"selectNYC, DIMAddress join(toFloat(selectNYC@LATITUDE) == DIMAddress@LATITUDE",
-				"     && toFloat(selectNYC@LONGITUDE) == DIMAddress@LONGITUDE",
-				"     && selectNYC@STREET_NAME == DIMAddress@STREET_NAME,",
-				"     joinType:'inner',",
+				"selectNYC, DIMAddress join(selectNYC@LATITUDE == DIMAddress@LATITUDE",
+				"     && selectNYC@LONGITUDE == DIMAddress@LONGITUDE",
+				"     && trim(selectNYC@STREET_NAME) == trim(DIMAddress@STREET_NAME),",
+				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1"
+				"     broadcast: 'auto')~> join1",
+				"join1, DIMVehicleType join(trim(VEHICLE_TYPE_CODE) == trim(VEHICLE_TYPE),",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2, DIMDate join(CRASH_DATE == DATE,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join3",
+				"join3, DIMTime join(CRASH_TIME == TIME,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join4",
+				"join4, DIMContrib join(upper(trim(CONTRIBUTING_FACTOR_VEHICLE)) == upper(trim(CONTRIBUTION)),",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join5",
+				"join5 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> FCTCrashes"
 			]
 		}
 	}
