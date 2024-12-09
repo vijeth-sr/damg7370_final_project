@@ -31,9 +31,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "datedim"
-				},
-				{
-					"name": "source5"
 				}
 			],
 			"sinks": [
@@ -51,9 +48,6 @@
 				},
 				{
 					"name": "derivedColumn1"
-				},
-				{
-					"name": "surrogateKey1"
 				},
 				{
 					"name": "lookup1"
@@ -75,6 +69,12 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "surrogateKey1"
 				}
 			],
 			"scriptLines": [
@@ -163,8 +163,6 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> datedim",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source5",
 				"source1 select(mapColumn(",
 				"          CRASH_ID,",
 				"          STREET_ADDRESS,",
@@ -197,35 +195,26 @@
 				"          pid = \"pipiddp\",",
 				"          Motor_injr_cnt = toInteger(MOTOR_VEHICLE_SERIOUS_INJURY_COUNT) + toInteger(BICYCLE_SERIOUS_INJURY_COUNT)  + toInteger(MOTORCYCLE_SERIOUS_INJURY_COUNT),",
 				"          pedstrian_fatal_cnt = toInteger(PEDESTRIAN_DEATH_COUNT)) ~> derivedColumn1",
-				"derivedColumn1 keyGenerate(output(CRASH_SK as long),",
-				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"select4, addresssk lookup(toDouble(  LATITUDE) == LATITUDE_sk",
-				"     && toDouble( LONGITUDE) == LONGITUDE_sk",
-				"     && STREET_ADDRESS == STREET_NAME_sk,",
+				"select4, addresssk lookup(STREET_ADDRESS == STREET_NAME_sk,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup1",
 				"lookup1 select(mapColumn(",
-				"          CRASH_SK,",
 				"          CRASH_ID,",
+				"          DI_Created_dt = select4@DI_Created_dt,",
 				"          total_injury_cnt,",
 				"          total_fatal_cnt,",
-				"          Motor_injr_cnt,",
 				"          Motor_fatal_cnt,",
-				"          pedstian_injr_cnt,",
+				"          pid,",
+				"          Motor_injr_cnt,",
 				"          pedstrian_fatal_cnt,",
-				"          CRASH_DATE,",
-				"          DI_Created_dt,",
-				"          pid = {union1@pid},",
-				"          Di_workflow_name,",
+				"          DATE_SK,",
 				"          ADDRESS_SK,",
-				"          created_dt,",
-				"          DATE_SK",
+				"          DI_WORKFLOW_NAME",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"surrogateKey1, datesklk lookup(toString( year(toDate(CRASH_DATE))) == YEAR",
+				"derivedColumn1, datesklk lookup(toString( year(toDate(CRASH_DATE))) == YEAR",
 				"     && toString( month(toDate(CRASH_DATE))) == MONTH",
 				"     && toString( dayOfMonth(toDate(CRASH_DATE))) == DAY_OF_MONTH,",
 				"     multiple: false,",
@@ -269,7 +258,6 @@
 				"          pid,",
 				"          Motor_injr_cnt,",
 				"          pedstrian_fatal_cnt,",
-				"          CRASH_SK,",
 				"          DATE_SK",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
@@ -287,7 +275,11 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> addresssk",
 				"lookup2 derive(DATE_SK = iif(isNull(DATE_SK), -1, toInteger(DATE_SK))) ~> derivedColumn2",
-				"select3 sink(allowSchemaDrift: true,",
+				"select3 derive(SOURCE_ID_SK = -1) ~> derivedColumn3",
+				"derivedColumn3 keyGenerate(output(CRASH_SK as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
 				"     validateSchema: true,",
 				"     input(",
 				"          CRASH_SK as string,",
@@ -315,16 +307,7 @@
 				"     mapColumn(",
 				"          CRASH_SK,",
 				"          CRASH_ID,",
-				"          TOTAL_INJURY_CNT = total_injury_cnt,",
-				"          TOTAL_FATAL_CNT = total_fatal_cnt,",
-				"          MOTOR_INJR_OR_KILLED_CNT = Motor_injr_cnt,",
-				"          PEDSTRIAN_FATAL_CNT = pedstrian_fatal_cnt,",
-				"          MOTOR_FATAL_CNT = Motor_fatal_cnt,",
-				"          DI_CREATED_DT = created_dt,",
-				"          PID = CRASH_SK,",
-				"          DATE_SK,",
-				"          ADDRESS_SK,",
-				"          SOURCE_ID_SK = total_fatal_cnt",
+				"          PID = pid",
 				"     )) ~> sink1"
 			]
 		}
