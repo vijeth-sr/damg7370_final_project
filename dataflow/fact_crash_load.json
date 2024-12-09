@@ -72,6 +72,9 @@
 				},
 				{
 					"name": "addresssk"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -197,7 +200,7 @@
 				"derivedColumn1 keyGenerate(output(CRASH_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"select4, addresssk lookup(ERROR_FUNCTION('') == source3@latitude",
+				"select4, addresssk lookup(LATITUDE == source3@latitude",
 				"     && union1@LONGITUDE == source3@longitude",
 				"     && iif(\r",
 				"    (isNull(rpt_block_num)) || (rpt_street_name == 'NOT REPORTED') , \r",
@@ -228,9 +231,7 @@
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"surrogateKey1, datesklk lookup(toString( year(toDate(CRASH_DATE))) == YEAR",
 				"     && toString( month(toDate(CRASH_DATE))) == MONTH",
-				"     && toString( dayOfMonth(toDate(CRASH_DATE))) == DAY_OF_MONTH",
-				"     && toString( hour(toTimestamp(CRASH_TIMESTAMP))) == HOUR",
-				"     && toString( minute(toTimestamp(CRASH_TIMESTAMP))) == MINUTES,",
+				"     && toString( dayOfMonth(toDate(CRASH_DATE))) == DAY_OF_MONTH,",
 				"     multiple: false,",
 				"     pickup: 'any',",
 				"     broadcast: 'auto')~> lookup2",
@@ -246,7 +247,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> datesklk",
-				"lookup2 select(mapColumn(",
+				"derivedColumn2 select(mapColumn(",
 				"          CRASH_DATE,",
 				"          CRASH_TIME,",
 				"          CRASH_TIMESTAMP,",
@@ -272,6 +273,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> addresssk",
+				"lookup2 derive(DATE_SK = iif(isNull(DATE_SK), -1, toInteger(DATE_SK))) ~> derivedColumn2",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: true,",
 				"     input(",
