@@ -96,6 +96,9 @@
 				},
 				{
 					"name": "filter4"
+				},
+				{
+					"name": "filter5"
 				}
 			],
 			"scriptLines": [
@@ -245,8 +248,7 @@
 				"          LONGITUDE = toFloat(LONGITUDE),",
 				"          di_create_dt = currentDate(),",
 				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn2",
-				"selectNYC derive(STREET_NAME = trim(STREET_NAME),",
-				"          LATITUDE = toFloat(LATITUDE),",
+				"selectNYC derive(LATITUDE = toFloat(LATITUDE),",
 				"          LONGITUDE = toFloat(LONGITUDE),",
 				"          CITY = trim(CITY),",
 				"          COUNTRY = trim(COUNTRY),",
@@ -262,6 +264,7 @@
 				"derivedColumn2 filter(!isNull(STREET_NAME)) ~> filter1",
 				"derivedColumn1 filter(!isNull(STREET_ADDRESS)) ~> filter2",
 				"derivedColumn4 filter(!isNull(STREET_NAME)) ~> filter4",
+				"derivedColumn3 filter(isNull(LATITUDE)) ~> filter5",
 				"filter2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -302,7 +305,7 @@
 				"          DI_CREATED_DT = di_create_dt,",
 				"          DI_WORKFLOW_NAME = di_workflow",
 				"     )) ~> ChicagoDIM",
-				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"filter5 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
