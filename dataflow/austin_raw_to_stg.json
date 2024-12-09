@@ -30,9 +30,6 @@
 				},
 				{
 					"name": "derivedColumn2"
-				},
-				{
-					"name": "derivedColumn3"
 				}
 			],
 			"scriptLines": [
@@ -84,8 +81,10 @@
 				"          CRASH_FATAL_FL = trim(CRASH_FATAL_FL),",
 				"          CASE_ID = trim(CASE_ID),",
 				"          STREET_ADDRESS = trim(STREET_ADDRESS),",
-				"          {crash DATEUTC} = toTimestamp(CRASH_TIMESTAMP, 'MM/dd/yyyy hh:mm:ss')) ~> derivedColumn1",
-				"derivedColumn3 foldDown(unroll(vehicle_types),",
+				"          {crash time} = toString(toTimestamp(CRASH_TIMESTAMP, 'yyyy-MM-dd HH:mm:ss'), 'HH:mm:ss')\r",
+				"\r",
+				") ~> derivedColumn1",
+				"derivedColumn1 foldDown(unroll(vehicle_types),",
 				"     mapColumn(",
 				"          CRASH_ID,",
 				"          CRASH_FATAL_FL,",
@@ -126,15 +125,17 @@
 				"          CREATED_DT,",
 				"          vehicle_types,",
 				"          {crash time},",
-				"          {crash DATEUTC}",
+				"          {crash DATEUTC} = derivedColumn1@{crash time}",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flatten1",
 				"flatten1 derive(DI_WORKFLOW_NAME = 'Austin_Integration_Workflow',",
 				"          CREATED_DT = currentDate(),",
 				"          id = concat(\"AST\",toString(CRASH_ID)),",
-				"          vehicle_types = trim(upper(vehicle_types))) ~> derivedColumn2",
-				"derivedColumn1 derive({crash time} = split(toString({crash DATEUTC}),' ')[2]) ~> derivedColumn3",
+				"          vehicle_types = trim(upper(vehicle_types)),",
+				"          LATITUDE = toFloat(iif(LATITUDE == '0', '999', LATITUDE))\r",
+				",",
+				"          LONGITUDE = toFloat(iif(LONGITUDE == '0', '999', LONGITUDE))) ~> derivedColumn2",
 				"derivedColumn2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -175,7 +176,7 @@
 				"          MICROMOBILITY_SERIOUS_INJURY_COUNT,",
 				"          MICROMOBILITY_DEATH_COUNT,",
 				"          CRASH_DATE,",
-				"          CRASH_TIMESTAMP = {crash DATEUTC},",
+				"          CRASH_TIMESTAMP,",
 				"          IS_DELETED,",
 				"          IS_TEMPORARY_RECORD,",
 				"          LAW_ENFORCEMENT_FATALITY_COUNT,",
@@ -184,7 +185,8 @@
 				"          COUNTRY,",
 				"          DI_WORKFLOW_NAME,",
 				"          CREATED_DT,",
-				"          VEHICLE_TYPE = vehicle_types",
+				"          VEHICLE_TYPE = vehicle_types,",
+				"          CRASH_TIME = {crash time}",
 				"     )) ~> sink1"
 			]
 		}
