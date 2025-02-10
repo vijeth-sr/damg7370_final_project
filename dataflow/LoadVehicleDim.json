@@ -1,0 +1,94 @@
+{
+	"name": "LoadVehicleDim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "nyc"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "austin"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          VEHICLE_TYPE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT DISTINCT VEHICLE_TYPE\\nFROM (\\n    SELECT UPPER(VEHICLE_TYPE_CODE) AS VEHICLE_TYPE\\n    FROM STG_NYC_V2\\n) ORDER BY 1',",
+				"     format: 'query') ~> nyc",
+				"source(output(",
+				"          VEHICLE_TYPE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'SELECT DISTINCT VEHICLE_TYPE  FROM STG_AUSTIN_V2',",
+				"     format: 'query') ~> austin",
+				"derivedColumn2, austin union(byName: true)~> union1",
+				"union1 keyGenerate(output(VEHICLE_SK as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"nyc filter(!regexMatch(VEHICLE_TYPE, '^[0-9]+$')&&\r",
+				"length(trim(VEHICLE_TYPE)) > 1 && \r",
+				"length(trim(VEHICLE_TYPE)) <= 50 &&\r",
+				"regexMatch(VEHICLE_TYPE, '[a-zA-Z]')) ~> filter1",
+				"surrogateKey1 derive(DI_CREATED_DT = currentDate(),",
+				"          DI_WORKFLOW_NAME = 'DIM_Vehicle_Type') ~> derivedColumn1",
+				"filter1 derive(VEHICLE_TYPE = trim(regexReplace(VEHICLE_TYPE, '[^a-zA-Z0-9 ]', ''))) ~> derivedColumn2",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          VEHICLE_SK,",
+				"          VEHICLE_TYPE,",
+				"          DI_CREATED_DT,",
+				"          DI_WORKFLOW_NAME",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

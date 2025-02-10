@@ -1,0 +1,29 @@
+{
+	"name": "nyc_crash_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Motor_Vehicle_Collisions_-_Crashes_20241129.tsv",
+				"container": "rawfiles"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "CRASH DATE\tCRASH TIME\tBOROUGH\tZIP CODE\tLATITUDE\tLONGITUDE\tLOCATION\tON STREET NAME\tCROSS STREET NAME\tOFF STREET NAME\tNUMBER OF PERSONS INJURED\tNUMBER OF PERSONS KILLED\tNUMBER OF PEDESTRIANS INJURED\tNUMBER OF PEDESTRIANS KILLED\tNUMBER OF CYCLIST INJURED\tNUMBER OF CYCLIST KILLED\tNUMBER OF MOTORIST INJURED\tNUMBER OF MOTORIST KILLED\tCONTRIBUTING FACTOR VEHICLE 1\tCONTRIBUTING FACTOR VEHICLE 2\tCONTRIBUTING FACTOR VEHICLE 3\tCONTRIBUTING FACTOR VEHICLE 4\tCONTRIBUTING FACTOR VEHICLE 5\tCOLLISION_ID\tVEHICLE TYPE CODE 1\tVEHICLE TYPE CODE 2\tVEHICLE TYPE CODE 3\tVEHICLE TYPE CODE 4\tVEHICLE TYPE CODE 5",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

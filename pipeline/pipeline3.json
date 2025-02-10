@@ -1,0 +1,131 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "nyc_raw_to_stg",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "nyc_raw_to_stg",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"tableName": "STG_NYC_RAW"
+							},
+							"sink1": {
+								"tableName": "STG_NYC_V2"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "LoadAddressDim",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "LoadAddressDim",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"AustinSTG": {
+								"tableName": "STG_AUSTIN_V2"
+							},
+							"ChicagoSTG": {
+								"tableName": "STG_CHICAGO_V2"
+							},
+							"NycSTG": {
+								"tableName": "STG_NYC_V2"
+							},
+							"MontgomerySTG": {
+								"tableName": "STG_MONTGOMERY_V2"
+							},
+							"AustinDIM": {
+								"tableName": "DIM_ADDRESS"
+							},
+							"ChicagoDIM": {
+								"tableName": "DIM_ADDRESS"
+							},
+							"NYCDIM": {
+								"tableName": "DIM_ADDRESS"
+							},
+							"MONTDIM": {
+								"tableName": "DIM_ADDRESS"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "LoadVehicleDim",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "LoadVehicleDim",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"nyc": {
+								"tableName": "STG_NYC_V2"
+							},
+							"austin": {
+								"tableName": "STG_AUSTIN_V2"
+							},
+							"sink1": {
+								"tableName": "DIM_VEHICLE_TYPE"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}

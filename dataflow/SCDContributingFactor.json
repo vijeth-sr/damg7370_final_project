@@ -1,0 +1,248 @@
+{
+	"name": "SCDContributingFactor",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "v1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "v2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "InsertNew"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "UpdateOld"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "InsertUpdated"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "alterRow2"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "setisactive0"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "oldUpdatedRecords"
+				},
+				{
+					"name": "NewUpdatedRecords"
+				},
+				{
+					"name": "alterRow3"
+				},
+				{
+					"name": "setisactive1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          DIM_CONTRIB_SK as decimal(38,0),",
+				"          CONTRIBUTION as string,",
+				"          CODE as decimal(38,0),",
+				"          AUSTIN as string,",
+				"          CHICAGO as string,",
+				"          NEWYORK as string,",
+				"          MONTGOMERY as string,",
+				"          IS_ACTIVE as decimal(38,0),",
+				"          SCD_VERSION as decimal(38,0),",
+				"          LOADED_TIMESTAMP as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> v1",
+				"source(output(",
+				"          DESCRIPTION as string,",
+				"          CODE as decimal(38,0),",
+				"          AUSTIN as string,",
+				"          CHICAGO as string,",
+				"          NEWYORK as string,",
+				"          MONTGOMERY as string,",
+				"          IS_ACTIVE as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> v2",
+				"select4 derive(IS_ACTIVE = 1,",
+				"          scd_version = 1,",
+				"          LOADED_TIMESTAMP = toString(currentTimestamp())) ~> derivedColumn2",
+				"derivedColumn2 alterRow(insertIf(1==1)) ~> alterRow2",
+				"v2, v1 lookup(v2@CODE == v1@CODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"v2 select(mapColumn(",
+				"          DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"lookup1 split(isNull(v1@CODE),",
+				"     !isNull(v1@CODE) && \r",
+				"(\r",
+				"    coalesce(upper(trim(DESCRIPTION)), '') != coalesce(upper(trim(CONTRIBUTION)), '') ||\r",
+				"    coalesce(upper(trim(v2@AUSTIN)), '') != coalesce(upper(trim(v1@AUSTIN)), '') ||\r",
+				"    coalesce(upper(trim(v2@CHICAGO)), '') != coalesce(upper(trim(v1@CHICAGO)), '') ||\r",
+				"    coalesce(upper(trim(v2@NEWYORK)), '') != coalesce(upper(trim(v1@NEWYORK)), '')\r",
+				"),",
+				"     disjoint: false) ~> split1@(New, Updated, Unchanged)",
+				"oldUpdatedRecords derive(IS_ACTIVE = 0,",
+				"          set_scd_version = 1,",
+				"          LOADED_TIMESTAMP = toString(currentTimestamp())) ~> setisactive0",
+				"split1@New select(mapColumn(",
+				"          DESCRIPTION,",
+				"          CODE = split1@New@CODE,",
+				"          AUSTIN = split1@New@AUSTIN,",
+				"          CHICAGO = split1@New@CHICAGO,",
+				"          NEWYORK = split1@New@NEWYORK,",
+				"          MONTGOMERY = split1@New@MONTGOMERY,",
+				"          IS_ACTIVE = split1@New@IS_ACTIVE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"split1@Updated select(mapColumn(",
+				"          DIM_CONTRIB_SK,",
+				"          CONTRIBUTION,",
+				"          CODE = split1@Updated@CODE,",
+				"          AUSTIN = split1@Updated@AUSTIN,",
+				"          CHICAGO = split1@Updated@CHICAGO,",
+				"          NEWYORK = split1@Updated@NEWYORK,",
+				"          MONTGOMERY = split1@Updated@MONTGOMERY,",
+				"          IS_ACTIVE = split1@Updated@IS_ACTIVE,",
+				"          SCD_VERSION,",
+				"          LOADED_TIMESTAMP",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> oldUpdatedRecords",
+				"split1@Updated select(mapColumn(",
+				"          DESCRIPTION,",
+				"          CODE = split1@Updated@CODE,",
+				"          AUSTIN = split1@Updated@AUSTIN,",
+				"          CHICAGO = split1@Updated@CHICAGO,",
+				"          NEWYORK = split1@Updated@NEWYORK,",
+				"          MONTGOMERY = split1@Updated@MONTGOMERY,",
+				"          IS_ACTIVE = split1@Updated@IS_ACTIVE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> NewUpdatedRecords",
+				"setisactive0 alterRow(updateIf(1==1)) ~> alterRow3",
+				"NewUpdatedRecords derive(IS_ACTIVE = 1,",
+				"          set_scd_version = 2,",
+				"          LOADED_TIMESTAMP = toString(currentTimestamp())) ~> setisactive1",
+				"alterRow2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 0,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CONTRIBUTION = DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE,",
+				"          SCD_VERSION = scd_version,",
+				"          LOADED_TIMESTAMP",
+				"     )) ~> InsertNew",
+				"alterRow3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['DIM_CONTRIB_SK'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CONTRIBUTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE,",
+				"          SCD_VERSION = set_scd_version,",
+				"          LOADED_TIMESTAMP,",
+				"          DIM_CONTRIB_SK",
+				"     )) ~> UpdateOld",
+				"setisactive1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CONTRIBUTION = DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE,",
+				"          SCD_VERSION = set_scd_version,",
+				"          LOADED_TIMESTAMP",
+				"     )) ~> InsertUpdated"
+			]
+		}
+	}
+}

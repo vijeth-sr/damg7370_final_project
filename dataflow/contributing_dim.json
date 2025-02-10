@@ -1,0 +1,187 @@
+{
+	"name": "contributing_dim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "v1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "v2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "scd1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "scd2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "UpdateFilter"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "alterRow1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "alterRow2"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> v1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> v2",
+				"v1, v2 lookup(v1@CODE == v2@CODE,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter((",
+				"   isNull(v2@CODE)",
+				") || (",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@DESCRIPTION), ''))),",
+				"        upper(trim(coalesce(toString(v1@DESCRIPTION), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@CHICAGO), ''))),",
+				"        upper(trim(coalesce(toString(v1@CHICAGO), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@AUSTIN), ''))),",
+				"        upper(trim(coalesce(toString(v1@AUSTIN), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@NEWYORK), ''))),",
+				"        upper(trim(coalesce(toString(v1@NEWYORK), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@MONTGOMERY), ''))),",
+				"        upper(trim(coalesce(toString(v1@MONTGOMERY), '')))",
+				"    )",
+				")) ~> UpdateFilter",
+				"UpdateFilter select(mapColumn(",
+				"          DESCRIPTION = {v1@DESCRIPTION},",
+				"          CODE = {v1@CODE},",
+				"          AUSTIN = {v1@AUSTIN},",
+				"          CHICAGO = {v1@CHICAGO},",
+				"          NEWYORK = {v1@NEWYORK},",
+				"          MONTGOMERY = {v1@MONTGOMERY},",
+				"          IS_ACTIVE = {v1@IS_ACTIVE}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(IS_ACTIVE = 0,",
+				"          scd_version = 1) ~> derivedColumn2",
+				"derivedColumn2 alterRow(updateIf(1==1)) ~> alterRow1",
+				"lookup1 filter((",
+				"   isNull(v1@CODE)",
+				") || (",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@DESCRIPTION), ''))),",
+				"        upper(trim(coalesce(toString(v1@DESCRIPTION), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@CHICAGO), ''))),",
+				"        upper(trim(coalesce(toString(v1@CHICAGO), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@AUSTIN), ''))),",
+				"        upper(trim(coalesce(toString(v1@AUSTIN), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@NEWYORK), ''))),",
+				"        upper(trim(coalesce(toString(v1@NEWYORK), '')))",
+				"    ) ||",
+				"    notEquals(",
+				"        upper(trim(coalesce(toString(v2@MONTGOMERY), ''))),",
+				"        upper(trim(coalesce(toString(v1@MONTGOMERY), '')))",
+				"    )",
+				")) ~> filter1",
+				"filter1 select(mapColumn(",
+				"          DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select3 derive(IS_ACTIVE = 1,",
+				"          scd_version = 2) ~> derivedColumn3",
+				"derivedColumn3 alterRow(upsertIf(1==1)) ~> alterRow2",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CONTRIBUTION = DESCRIPTION,",
+				"          CODE,",
+				"          AUSTIN,",
+				"          CHICAGO,",
+				"          NEWYORK,",
+				"          MONTGOMERY,",
+				"          IS_ACTIVE,",
+				"          SCD_VERSION = scd_version",
+				"     )) ~> scd1",
+				"alterRow2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> scd2"
+			]
+		}
+	}
+}

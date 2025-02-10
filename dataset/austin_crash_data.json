@@ -1,0 +1,28 @@
+{
+	"name": "austin_crash_data",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Linkedservice_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Austin_Crash_Report_Data_-_Crash_Level_Records_20241129.tsv",
+				"container": "rawfiles"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ID\tCrash ID\tcrash_fatal_fl\tcase_id\tPrimary address\tSecondary address\trpt_block_num\trpt_street_name\trpt_street_sfx\tcrash_speed_limit\troad_constr_zone_fl\tlatitude\tlongitude\tcrash_sev_id\tsus_serious_injry_cnt\tnonincap_injry_cnt\tposs_injry_cnt\tnon_injry_cnt\tunkn_injry_cnt\ttot_injry_cnt\tdeath_cnt\tunits_involved\tpoint\tmotor_vehicle_death_count\tmotor_vehicle_serious_injury_count\tbicycle_death_count\tbicycle_serious_injury_count\tpedestrian_death_count\tpedestrian_serious_injury_count\tmotorcycle_death_count\tmotorcycle_serious_injury_count\tother_death_count\tother_serious_injury_count\tonsys_fl\tprivate_dr_fl\tmicromobility_serious_injury_count\tmicromobility_death_count\tCrash timestamp (US/Central)\tCrash timestamp\tIs deleted\tIs temporary record\tLaw enforcement fatality count\tReported street prefix",
+				"type": "String"
+			}
+		]
+	}
+}

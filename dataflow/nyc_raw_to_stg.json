@@ -1,0 +1,173 @@
+{
+	"name": "nyc_raw_to_stg",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AddingMetrics"
+				},
+				{
+					"name": "extract1"
+				},
+				{
+					"name": "extract2"
+				},
+				{
+					"name": "extract3"
+				},
+				{
+					"name": "extract4"
+				},
+				{
+					"name": "extract5"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "filter2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          COLLISION_ID as string,",
+				"          CRASH_DATE as string,",
+				"          CRASH_TIME as string,",
+				"          BOROUGH as string,",
+				"          ZIP_CODE as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          LOCATION as string,",
+				"          ON_STREET_NAME as string,",
+				"          OFF_STREET_NAME as string,",
+				"          CROSS_STREET_NAME as string,",
+				"          NUMBER_OF_PERSONS_INJURED as string,",
+				"          NUMBER_OF_PERSONS_KILLED as string,",
+				"          NUMBER_OF_PEDESTRIANS_INJURED as string,",
+				"          NUMBER_OF_PEDESTRIANS_KILLED as string,",
+				"          NUMBER_OF_CYCLIST_INJURED as string,",
+				"          NUMBER_OF_CYCLIST_KILLED as string,",
+				"          NUMBER_OF_MOTORIST_INJURED as string,",
+				"          NUMBER_OF_MOTORIST_KILLED as string,",
+				"          CONTRIBUTING_FACTOR_VEHICLE_1 as string,",
+				"          CONTRIBUTING_FACTOR_VEHICLE_2 as string,",
+				"          CONTRIBUTING_FACTOR_VEHICLE_3 as string,",
+				"          CONTRIBUTING_FACTOR_VEHICLE_4 as string,",
+				"          CONTRIBUTING_FACTOR_VEHICLE_5 as string,",
+				"          VEHICLE_TYPE_CODE_1 as string,",
+				"          VEHICLE_TYPE_CODE_2 as string,",
+				"          VEHICLE_TYPE_CODE_3 as string,",
+				"          VEHICLE_TYPE_CODE_4 as string,",
+				"          VEHICLE_TYPE_CODE_5 as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source1",
+				"source1 derive(PEDESTRIAN_FLAG = iif(toInteger(coalesce(NUMBER_OF_PEDESTRIANS_KILLED, '0')) > 0 || toInteger(coalesce(NUMBER_OF_PEDESTRIANS_INJURED, '0')) > 0, 1, 0),",
+				"          TOT_INJRY_CNT = toInteger(coalesce(NUMBER_OF_PEDESTRIANS_INJURED, '0')) +\r",
+				"toInteger(coalesce(NUMBER_OF_CYCLIST_INJURED, '0')) +\r",
+				"toInteger(coalesce(NUMBER_OF_MOTORIST_INJURED, '0')) +\r",
+				"toInteger(coalesce(NUMBER_OF_PERSONS_INJURED, '0')),",
+				"          MOTORIST_INJRY_OR_KILLED_CNT = toInteger(coalesce(NUMBER_OF_MOTORIST_INJURED, '0')) +  toInteger(coalesce(NUMBER_OF_MOTORIST_KILLED, '0')),",
+				"          TOT_FATAL_CNT = toInteger(coalesce(NUMBER_OF_PEDESTRIANS_KILLED, '0')) +  toInteger(coalesce(NUMBER_OF_CYCLIST_KILLED, '0')) +  toInteger(coalesce(NUMBER_OF_MOTORIST_KILLED, '0')) +  toInteger(coalesce(NUMBER_OF_PERSONS_KILLED, '0'))) ~> AddingMetrics",
+				"AddingMetrics derive(CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_1,",
+				"          VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_1) ~> extract1",
+				"extract1 derive(CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_2,",
+				"          VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_2) ~> extract2",
+				"extract2 derive(VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_3,",
+				"          CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_3) ~> extract3",
+				"extract3 derive(CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_4,",
+				"          VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_4) ~> extract4",
+				"extract4 derive(CONTRIBUTING_FACTOR_VEHICLE = CONTRIBUTING_FACTOR_VEHICLE_5,",
+				"          VEHICLE_TYPE_CODE = VEHICLE_TYPE_CODE_5) ~> extract5",
+				"extract5, extract4, extract3, extract2, extract1 union(byName: true)~> union1",
+				"union1 filter(!isNull(CONTRIBUTING_FACTOR_VEHICLE) && !isNull(VEHICLE_TYPE_CODE) &&\r",
+				"!regexMatch(VEHICLE_TYPE_CODE, '^[0-9]+$')&&\r",
+				"length(trim(VEHICLE_TYPE_CODE)) > 1 && \r",
+				"length(trim(VEHICLE_TYPE_CODE)) <= 50 &&\r",
+				"regexMatch(VEHICLE_TYPE_CODE, '[a-zA-Z]')) ~> filter1",
+				"filter1 derive(DI_CreateDate = currentDate(),",
+				"          DI_Workfile_Name = \"NYC_STAGING_WORKFLOW\",",
+				"          CRASH_DATETIME = toTimestamp(concat(CRASH_DATE, ' ', CRASH_TIME), 'yyyy-MM-dd HH:mm'),",
+				"          City = \"New York\",",
+				"          Country = \"United States\",",
+				"          on_street_name_clean = trim(regexReplace(toString(ON_STREET_NAME), '[^a-zA-Z0-9 ]', '')),",
+				"          off_street_name_clean = trim(regexReplace(toString(OFF_STREET_NAME), '[^a-zA-Z0-9 ]', ''))) ~> derivedColumn1",
+				"derivedColumn1 derive(street_name_derived = trim(upper(concat(coalesce(on_street_name_clean, ''), ' ', coalesce(off_street_name_clean, '')))),",
+				"          CONTRIBUTING_FACTOR_VEHICLE = trim(CONTRIBUTING_FACTOR_VEHICLE),",
+				"          VEHICLE_TYPE_CODE = trim(upper(regexReplace(VEHICLE_TYPE_CODE, '[^a-zA-Z0-9 ]', ''))),",
+				"          LATITUDE = toFloat(iif(isNull(LATITUDE), '999', LATITUDE)),",
+				"          LONGITUDE = toFloat(iif(isNull(LONGITUDE), '999', LONGITUDE))) ~> derivedColumn2",
+				"derivedColumn2 filter(!regexMatch(VEHICLE_TYPE_CODE, '^[0-9]+$')&&",
+				"length(trim(VEHICLE_TYPE_CODE)) > 1 && ",
+				"length(trim(VEHICLE_TYPE_CODE)) <= 50 &&",
+				"regexMatch(VEHICLE_TYPE_CODE, '[a-zA-Z]')) ~> filter2",
+				"filter2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          COLLISION_ID,",
+				"          CRASH_DATE,",
+				"          CRASH_TIME,",
+				"          CRASH_DATETIME,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          STREET_NAME = street_name_derived,",
+				"          ZIP_CODE,",
+				"          NUMBER_OF_PEDESTRIANS_KILLED,",
+				"          NUMBER_OF_PEDESTRIANS_INJURED,",
+				"          NUMBER_OF_PERSONS_INJURED,",
+				"          NUMBER_OF_CYCLIST_INJURED,",
+				"          NUMBER_OF_MOTORIST_INJURED,",
+				"          NUMBER_OF_MOTORIST_KILLED,",
+				"          NUMBER_OF_PERSONS_KILLED,",
+				"          NUMBER_OF_CYCLIST_KILLED,",
+				"          PEDESTRIAN_FLAG,",
+				"          TOT_INJRY_CNT,",
+				"          MOTORIST_INJRY_OR_KILLED_CNT,",
+				"          TOT_FATAL_CNT,",
+				"          CONTRIBUTING_FACTOR_VEHICLE,",
+				"          VEHICLE_TYPE_CODE,",
+				"          CITY = City,",
+				"          COUNTRY = Country,",
+				"          DI_WORKFLOW_FILENAME = DI_Workfile_Name,",
+				"          DI_CREATEDDATE = DI_CreateDate",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

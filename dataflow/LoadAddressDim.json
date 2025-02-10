@@ -1,0 +1,228 @@
+{
+	"name": "LoadAddressDim",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "AustinSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "ChicagoSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "NycSTG"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "MontgomerySTG"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "AustinDIM"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "ChicagoDIM"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "NYCDIM"
+				},
+				{
+					"dataset": {
+						"referenceName": "SnowflakeStagiing",
+						"type": "DatasetReference"
+					},
+					"name": "MONTDIM"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "derivedColumn4"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          STREET_ADDRESS as string,",
+				"          LATITUDE as decimal(10,7),",
+				"          LONGITUDE as decimal(10,7),",
+				"          CITY as string,",
+				"          COUNTRY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'Select Distinct STREET_ADDRESS, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_austin_v2 ',",
+				"     format: 'query') ~> AustinSTG",
+				"source(output(",
+				"          STREET_NAME as string,",
+				"          LATITUDE as double,",
+				"          LONGITUDE as double,",
+				"          CITY as string,",
+				"          COUNTRY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'Select distinct STREET_NAME, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_chicago_v2 where STREET_NAME is not null',",
+				"     format: 'query') ~> ChicagoSTG",
+				"source(output(",
+				"          STREET_NAME as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          CITY as string,",
+				"          COUNTRY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'Select distinct STREET_NAME, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_nyc_v2 WHERE STREET_NAME IS NOT NULL',",
+				"     format: 'query') ~> NycSTG",
+				"source(output(",
+				"          STREET_NAME as string,",
+				"          LATITUDE as string,",
+				"          LONGITUDE as string,",
+				"          CITY as string,",
+				"          COUNTRY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     query: 'Select distinct STREET_NAME, LATITUDE, LONGITUDE, CITY, COUNTRY from stg_montgomery_v2 ',",
+				"     format: 'query') ~> MontgomerySTG",
+				"AustinSTG derive(STREET_ADDRESS = upper(trim(STREET_ADDRESS)),",
+				"          LATITUDE = toFloat(LATITUDE),",
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_date = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn1",
+				"ChicagoSTG derive(STREET_NAME = upper(trim(STREET_NAME)),",
+				"          LATITUDE = toFloat(LATITUDE),",
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn2",
+				"NycSTG derive(LATITUDE = toFloat(LATITUDE),",
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow',",
+				"          STREET_NAME = trim(STREET_NAME)) ~> derivedColumn3",
+				"MontgomerySTG derive(LATITUDE = toFloat(LATITUDE),",
+				"          STREET_NAME = upper(trim(STREET_NAME)),",
+				"          LONGITUDE = toFloat(LONGITUDE),",
+				"          di_create_dt = currentDate(),",
+				"          di_workflow = 'Address_Integration_Workflow') ~> derivedColumn4",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_NAME = STREET_ADDRESS,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_date,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> AustinDIM",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 4,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_NAME,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> ChicagoDIM",
+				"derivedColumn3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          STREET_NAME,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> NYCDIM",
+				"derivedColumn4 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 3,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          STREET_NAME,",
+				"          LATITUDE,",
+				"          LONGITUDE,",
+				"          CITY,",
+				"          COUNTRY,",
+				"          DI_CREATED_DT = di_create_dt,",
+				"          DI_WORKFLOW_NAME = di_workflow",
+				"     )) ~> MONTDIM"
+			]
+		}
+	}
+}
