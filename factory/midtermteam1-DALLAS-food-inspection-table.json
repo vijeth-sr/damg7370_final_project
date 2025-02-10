@@ -1,0 +1,9 @@
+{
+	"name": "midtermteam1-DALLAS-food-inspection-table",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f8b8a1c9-f633-4363-b32f-475e18a58fa4",
+		"tenantId": "a8eec281-aaa3-4dae-ac9b-9a398b9215e7"
+	}
+}
