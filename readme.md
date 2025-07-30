@@ -4,7 +4,7 @@
 This project analyzes over **10 million vehicle crash records** across major U.S. cities to uncover insights into accident trends, high-risk zones, and injury patterns. It leverages cloud-based data engineering practices to ensure scalable, maintainable, and reliable pipelines for large-scale data. Emphasis is placed on **data quality**, **traceability**, and **dimensional modeling**.
 
 **Technologies Used**:  
-Azure Data Factory · ADLS Gen2 · Snowflake · Alteryx · SQL · ER Studio · Power BI
+Azure Data Factory · ADLS Gen2 · Azure Blob · Snowflake · Alteryx · SQL · ER Studio · Power BI
 
 ---
 
