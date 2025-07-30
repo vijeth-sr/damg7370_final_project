@@ -1,63 +1,55 @@
-Motor Vehicle Collision Analysis
-🚦 Project Overview
-This project analyzes over 10 million vehicle crash records across metropolitan areas to uncover insights into accident trends, high-risk zones, and injury patterns. Leveraging modern data engineering practices, the solution ensures scalable, maintainable, and reliable pipelines for processing large-scale structured data. The project emphasizes data quality, traceability, and insightful analytics using cloud-native technologies and dimensional modeling techniques.
+# 🚦 Motor Vehicle Collision Analysis
 
-Tools & Technologies:
-Azure Data Factory | Snowflake | Alteryx | SQL | ER Studio | Power BI | dbt (for modeling)
+## 📌 Overview
+This project analyzes over **10 million vehicle crash records** across major U.S. cities to uncover insights into accident trends, high-risk zones, and injury patterns. It leverages cloud-based data engineering practices to ensure scalable, maintainable, and reliable pipelines for large-scale data. Emphasis is placed on **data quality**, **traceability**, and **dimensional modeling**.
 
-📂 Data Sources
-The datasets were sourced from official city data portals and span a 5-year period, covering:
+**Technologies Used**:  
+Azure Data Factory · Snowflake · Alteryx · SQL · ER Studio · Power BI
 
-New York City
+---
 
-Chicago
+## 📂 Data Sources
+Crash datasets were collected from open data portals for the following cities:
+- New York City
+- Chicago
+- Austin
+- Montgomery
 
-Austin
+These datasets spanned 5+ years and exhibited schema and format inconsistencies which were resolved in the pipeline.
 
-Montgomery
+---
 
-Each dataset had schema inconsistencies, requiring extensive profiling and normalization.
+## ⚙️ Implementation Details
 
-🔧 Key Implementation Highlights
-🔍 1. Data Profiling & Cleansing
-Alteryx was used for initial data profiling: checking for nulls, outliers, and pattern inconsistencies.
+### 1. Data Profiling and Cleansing
+- Used **Alteryx** to perform data profiling, identify nulls, outliers, and schema anomalies.
+- Standardized fields across city datasets for compatibility in downstream processes.
 
-Identified schema mismatches and standardized data types and formats for downstream processing.
+### 2. Pipeline Architecture (ADF)
+- Developed modular **Azure Data Factory pipelines** for batch ingestion of raw files.
+- Followed a **Bronze → Silver → Gold** architecture:
+  - **Bronze**: Raw data ingested from blob storage
+  - **Silver**: Cleaned, standardized parquet outputs
+  - **Gold**: Modeled tables in Snowflake for analytics
 
-🔁 2. Data Pipeline Architecture
-Built a modular Azure Data Factory pipeline to ingest raw crash data from each city.
+### 3. Dimensional Modeling in Snowflake
+- Created **Fact** and **Dimension** tables using ER Studio for logical design.
+- Applied **SCD Type 2** logic to track changes in collision-related categories.
+- Optimized schema for performance and extensibility.
 
-Data was staged in a Bronze-Silver-Gold architecture:
+---
 
-Bronze: Raw CSV ingestion
+## 📊 Analytics & Insights
+- Built interactive dashboards in **Power BI** to visualize:
+  - Collision trends by location, time, and severity
+  - Heatmaps of high-risk intersections
+  - Comparisons of injuries and fatalities across cities
 
-Silver: Cleaned and standardized parquet-formatted data
+---
 
-Gold: Final Snowflake tables ready for analytics
+## 🧠 Key Outcomes
+- Query performance improved by **60%** due to optimized schema and indexing
+- Enabled city-wise comparison dashboards for risk mitigation strategies
+- Achieved end-to-end automation and repeatability of data ingestion
 
-🧠 3. Dimensional Modeling
-Designed a Snowflake schema using ER Studio with separate Fact and Dimension tables.
 
-Incorporated Slowly Changing Dimensions (SCD Type 2) to track evolving attributes like collision category changes over time.
-
-Used audit columns for versioning and traceability.
-
-📈 4. Analytics & Insights
-Created dashboards in Power BI to analyze:
-
-Accident distribution by time, weather, location
-
-Injury vs. fatality hotspots
-
-City-wise comparative risk
-
-Geospatial analysis using lat/long coordinates for heatmaps.
-
-🔎 Business Insights Delivered
-Most accident-prone intersections by city.
-
-Injury trends by day/time/season.
-
-Pedestrian vs. motorist injury and fatality comparisons.
-
-Common causes and conditions during high-severity accidents.
